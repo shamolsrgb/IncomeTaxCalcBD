@@ -11,7 +11,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: ['en', 'bn'],
     defaultNS: 'translation',
-    backend: { loadPath: '/locales/{{lng}}/{{ns}}.json' },
+    backend: { loadPath: `${import.meta.env.BASE_URL}locales/{{lng}}/{{ns}}.json` },
     detection: { order: ['localStorage', 'navigator'], caches: ['localStorage'] },
     interpolation: { escapeValue: false },
   });
