@@ -11,7 +11,7 @@ export function Step08_OtherIncome() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-4">{t('otherIncome.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-4">{t('otherIncome.title')}</h2>
 
       <CurrencyInput label={t('otherIncome.lottery')} value={oi.lottery} onChange={(v) => updateOtherIncome({ lottery: v })} note="TDS @20% deducted at source (final tax — non-adjustable)" />
       <CurrencyInput

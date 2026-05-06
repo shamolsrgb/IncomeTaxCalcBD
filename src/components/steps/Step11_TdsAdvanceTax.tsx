@@ -13,7 +13,7 @@ export function Step11_TdsAdvanceTax() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-4">{t('tds.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-4">{t('tds.title')}</h2>
 
       <CurrencyInput
         label={t('tds.salary')}
@@ -40,7 +40,7 @@ export function Step11_TdsAdvanceTax() {
       <CurrencyInput label={t('tds.dividend')} value={tds.dividend} onChange={(v) => updateTdsCredits({ dividend: v })} />
       <CurrencyInput label={t('tds.other')} value={tds.other} onChange={(v) => updateTdsCredits({ other: v })} />
 
-      <div className="border-t border-slate-200 pt-4 mt-2">
+      <div className="border-t border-[#1E2D47] pt-4 mt-2">
         <CurrencyInput
           label={t('tds.advanceTax')}
           value={inputs.advanceTax}

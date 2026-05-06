@@ -16,7 +16,7 @@ export function Step06_Business() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-4">{t('business.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-4">{t('business.title')}</h2>
 
       <CurrencyInput
         label={t('business.netProfit')}
@@ -32,7 +32,7 @@ export function Step06_Business() {
       />
 
       {biz.netProfit > 0 && (
-        <div className="mt-4 bg-slate-50 rounded-lg p-4 border border-slate-200">
+        <div className="mt-4 bg-[#0F1828] rounded-lg p-4 border border-[#1E2D47]">
           <ReadOnlyRow label="Net Profit" value={biz.netProfit} />
           {totalInterest > 0 && <ReadOnlyRow label="Less: Business Loan Interest" value={-totalInterest} />}
           <ReadOnlyRow label="Taxable Business Income" value={taxable} className="font-bold text-brand" />

@@ -41,7 +41,7 @@ export function Step07_CapitalGains() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-2">{t('capitalGains.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-2">{t('capitalGains.title')}</h2>
       <p className="text-xs text-slate-500 mb-4">
         Land/Building held &gt;5 years: 15% flat. Listed shares: first ৳50L exempt, 10% above.
       </p>
@@ -50,18 +50,18 @@ export function Step07_CapitalGains() {
         const cgr = result.capitalGainResults.find((r) => r.id === entry.id);
         const gain = entry.salePrice - entry.acquisitionCost;
         return (
-          <div key={entry.id} className="border border-slate-200 rounded-lg p-4 mb-4 bg-slate-50">
+          <div key={entry.id} className="border border-[#1E2D47] rounded-lg p-4 mb-4 bg-[#0F1828]">
             <div className="flex justify-between items-center mb-3">
-              <p className="text-sm font-semibold text-slate-700">Asset {idx + 1}</p>
+              <p className="text-sm font-semibold text-slate-300">Asset {idx + 1}</p>
               <button onClick={() => removeEntry(entry.id)} className="text-xs text-red-500 hover:text-red-700">Remove</button>
             </div>
 
             <div className="mb-3">
-              <label className="block text-sm font-medium text-slate-700 mb-1">{t('capitalGains.assetType')}</label>
+              <label className="block text-sm font-medium text-slate-300 mb-1">{t('capitalGains.assetType')}</label>
               <select
                 value={entry.assetType}
                 onChange={(e) => updateEntry(entry.id, { assetType: e.target.value as CapitalAssetType })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
+                className="w-full px-3 py-2 border border-[#1E2D47] rounded-lg text-sm bg-[#0F1828] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)] focus:border-[rgba(187,255,71,0.5)]"
               >
                 {ASSET_TYPES.map((at) => (
                   <option key={at} value={at}>{t(`capitalGains.assetTypes.${at}`)}</option>
@@ -71,21 +71,21 @@ export function Step07_CapitalGains() {
 
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">{t('capitalGains.acquisitionDate')}</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">{t('capitalGains.acquisitionDate')}</label>
                 <input
                   type="date"
                   value={entry.acquisitionDate}
                   onChange={(e) => updateEntry(entry.id, { acquisitionDate: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
+                  className="w-full px-3 py-2 border border-[#1E2D47] rounded-lg text-sm bg-[#0F1828] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)] focus:border-[rgba(187,255,71,0.5)]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">{t('capitalGains.saleDate')}</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">{t('capitalGains.saleDate')}</label>
                 <input
                   type="date"
                   value={entry.saleDate}
                   onChange={(e) => updateEntry(entry.id, { saleDate: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
+                  className="w-full px-3 py-2 border border-[#1E2D47] rounded-lg text-sm bg-[#0F1828] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)] focus:border-[rgba(187,255,71,0.5)]"
                 />
               </div>
             </div>
@@ -111,7 +111,7 @@ export function Step07_CapitalGains() {
             </div>
 
             {(entry.acquisitionCost > 0 || entry.salePrice > 0) && (
-              <div className={`mt-2 text-sm font-semibold ${gain >= 0 ? 'text-brand' : 'text-red-600'}`}>
+              <div className={`mt-2 text-sm font-semibold ${gain >= 0 ? 'text-brand' : 'text-red-400'}`}>
                 {t('capitalGains.gain')}: {formatBDT(gain)}
                 {cgr && cgr.exemption > 0 && (
                   <span className="text-xs text-slate-500 font-normal ml-2">(Exempt: {formatBDT(cgr.exemption)}, Taxable: {formatBDT(cgr.taxableGain)})</span>
@@ -124,7 +124,7 @@ export function Step07_CapitalGains() {
               value={entry.description ?? ''}
               onChange={(e) => updateEntry(entry.id, { description: e.target.value })}
               placeholder={t('capitalGains.description')}
-              className="mt-3 w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
+              className="mt-3 w-full px-3 py-2 border border-[#1E2D47] rounded-lg text-sm bg-[#0F1828] text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)] focus:border-[rgba(187,255,71,0.5)]"
             />
           </div>
         );
@@ -132,7 +132,7 @@ export function Step07_CapitalGains() {
 
       <button
         onClick={addEntry}
-        className="w-full py-3 border-2 border-dashed border-brand text-brand text-sm font-medium rounded-lg hover:bg-brand-50 transition-colors mb-4"
+        className="w-full py-3 border-2 border-dashed border-[#BBFF47]/40 text-[#BBFF47] text-sm font-medium rounded-xl hover:border-[#BBFF47]/70 hover:bg-[#BBFF47]/5 transition-all mb-4"
       >
         + {t('capitalGains.addAsset')}
       </button>
@@ -145,7 +145,7 @@ export function Step07_CapitalGains() {
       />
 
       {result.capitalLossCarryForward > 0 && (
-        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+        <div className="mt-3 bg-amber-900/20 border border-amber-700/40 rounded-lg p-3 text-sm text-amber-300">
           Net capital loss {formatBDT(result.capitalLossCarryForward)} can be carried forward to next AY.
         </div>
       )}

@@ -13,13 +13,13 @@ export function Step10_Investments() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-2">{t('investments.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-2">{t('investments.title')}</h2>
       <p className="text-xs text-slate-500 mb-4">
         Rebate = 15% × min(total investments, 30% of taxable income, ৳1 crore)
       </p>
 
       {isNRB && (
-        <div className="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-800">
+        <div className="mb-4 bg-amber-900/20 border border-amber-700/40 rounded-lg p-3 text-sm text-amber-300">
           Investment rebate (Section 78) is not available for Non-Resident Bangladeshis.
         </div>
       )}

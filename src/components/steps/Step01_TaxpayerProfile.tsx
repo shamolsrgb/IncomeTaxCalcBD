@@ -74,11 +74,11 @@ export function Step01_TaxpayerProfile() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-4">{t('profile.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-4">{t('profile.title')}</h2>
 
       {/* Taxpayer Category */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.category')}</label>
+        <label className="block text-sm font-medium text-slate-300 mb-2">{t('profile.category')}</label>
         <div className="grid grid-cols-6 gap-2">
           {CATEGORIES.map((cat) => {
             const active = inputs.taxpayerCategory === cat;
@@ -114,12 +114,12 @@ export function Step01_TaxpayerProfile() {
           onChange={(e) => updateInputs({ hasDisabledDependent: e.target.checked })}
           className="w-4 h-4 rounded text-brand accent-brand"
         />
-        <span className="text-sm text-slate-700">{t('profile.hasDisabledDependent')}</span>
+        <span className="text-sm text-slate-300">{t('profile.hasDisabledDependent')}</span>
       </label>
 
       {/* Employer Type */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.employerType')}</label>
+        <label className="block text-sm font-medium text-slate-300 mb-2">{t('profile.employerType')}</label>
         <div className="grid grid-cols-6 gap-2">
           {EMPLOYER_TYPES.map((et) => {
             const active = inputs.employerType === et;
@@ -146,11 +146,11 @@ export function Step01_TaxpayerProfile() {
 
       {/* Residence Area */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.residenceArea')}</label>
+        <label className="block text-sm font-medium text-slate-300 mb-2">{t('profile.residenceArea')}</label>
         <select
           value={inputs.residenceArea}
           onChange={(e) => updateInputs({ residenceArea: e.target.value as ResidenceArea })}
-          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+          className="w-full px-3 py-2 border border-[#253A5E] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand"
         >
           {AREAS.map((area) => (
             <option key={area} value={area}>{t(`profile.residenceAreas.${area}`)}</option>

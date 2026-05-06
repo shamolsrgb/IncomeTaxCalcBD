@@ -16,7 +16,7 @@ export function Step03_Securities() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-4">{t('securities.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-4">{t('securities.title')}</h2>
 
       <CurrencyInput
         label={t('securities.bankFdr')}
@@ -55,9 +55,9 @@ export function Step03_Securities() {
       />
 
       {total > 0 && (
-        <div className="mt-4 bg-slate-50 rounded-lg p-3 border border-slate-200 text-sm">
+        <div className="mt-4 bg-[#0F1828] rounded-lg p-3 border border-[#1E2D47] text-sm">
           <div className="flex justify-between font-semibold">
-            <span className="text-slate-600">Total Taxable Securities Income</span>
+            <span className="text-slate-400">Total Taxable Securities Income</span>
             <span className="text-brand">{formatBDT(total)}</span>
           </div>
         </div>

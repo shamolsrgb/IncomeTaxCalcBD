@@ -14,7 +14,7 @@ export function Step05_Agriculture() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-4">{t('agriculture.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-4">{t('agriculture.title')}</h2>
 
       <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-800">
         {t('agriculture.exemptNote')} (৳{cfg.agriculturalExemption.toLocaleString('en-IN')})
@@ -24,7 +24,7 @@ export function Step05_Agriculture() {
       <CurrencyInput label={t('agriculture.cultivationCost')} value={ag.cultivationCost} onChange={(v) => updateAgriculture({ cultivationCost: v })} note="Cost of seeds, fertiliser, labour, irrigation, repairs" />
 
       {ag.grossIncome > 0 && (
-        <div className="mt-4 bg-slate-50 rounded-lg p-4 border border-slate-200">
+        <div className="mt-4 bg-[#0F1828] rounded-lg p-4 border border-[#1E2D47]">
           <p className="text-xs font-semibold text-slate-500 uppercase mb-3">Agricultural Income Computation</p>
           <ReadOnlyRow label="Gross Agricultural Income" value={ag.grossIncome} />
           {ag.cultivationCost > 0 && <ReadOnlyRow label="Less: Cost of Cultivation" value={-ag.cultivationCost} />}

@@ -25,7 +25,7 @@ export function Step04_HouseProperty() {
 
   return (
     <div>
-      <h2 className="text-lg font-bold text-slate-800 mb-4">{t('houseProperty.title')}</h2>
+      <h2 className="text-lg font-bold text-slate-100 mb-4">{t('houseProperty.title')}</h2>
 
       <CurrencyInput
         label={t('houseProperty.annualValue')}
@@ -34,11 +34,11 @@ export function Step04_HouseProperty() {
       />
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-1">{t('houseProperty.vacancyMonths')}</label>
+        <label className="block text-sm font-medium text-slate-300 mb-1">{t('houseProperty.vacancyMonths')}</label>
         <select
           value={hp.vacancyMonths}
           onChange={(e) => updateHouseProperty({ vacancyMonths: Number(e.target.value) })}
-          className="w-32 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+          className="w-32 px-3 py-2 bg-[#0F1828] border border-[#1E2D47] rounded-lg text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)] focus:border-[rgba(187,255,71,0.5)]"
         >
           {Array.from({ length: 13 }, (_, i) => (
             <option key={i} value={i}>{i} months</option>
@@ -57,7 +57,7 @@ export function Step04_HouseProperty() {
       <CurrencyInput label={t('houseProperty.insurance')} value={hp.insurance} onChange={(v) => updateHouseProperty({ insurance: v })} />
 
       {hp.annualValue > 0 && (
-        <div className="mt-4 bg-slate-50 rounded-lg p-4 border border-slate-200">
+        <div className="mt-4 bg-[#0F1828] rounded-lg p-4 border border-[#1E2D47]">
           <p className="text-xs font-semibold text-slate-500 uppercase mb-3">House Property Computation</p>
           <ReadOnlyRow label="Annual Value (vacancy adjusted)" value={vacancyAdjusted} />
           <ReadOnlyRow label={`${t('houseProperty.repairDeduction')} (25% × ${formatBDT(vacancyAdjusted)})`} value={-repairDeduction} />
