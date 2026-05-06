@@ -52,7 +52,6 @@ export function StepContainer() {
   const isLastInTab = posInTab === tabGroup.length - 1;
 
   // Refs for animations
-  const contentRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
   const rightPanelRef = useRef<HTMLDivElement>(null);
   const payableRef = useRef<HTMLParagraphElement>(null);

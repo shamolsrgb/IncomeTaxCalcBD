@@ -6,11 +6,10 @@ import { TAX_CONFIG } from '../../config/taxConfig';
 
 export function Step10_Investments() {
   const { t } = useTranslation();
-  const { inputs, updateInvestments, result } = useTaxStore();
+  const { inputs, updateInvestments } = useTaxStore();
   const inv = inputs.investments;
   const cfg = TAX_CONFIG[inputs.ayKey];
   const isNRB = inputs.taxpayerType === 'nrb';
-  const adv = result.advisorMetrics;
 
   return (
     <div>
@@ -42,15 +41,6 @@ export function Step10_Investments() {
       <CurrencyInput label={t('investments.zakat')} value={inv.zakat} onChange={(v) => updateInvestments({ zakat: v })} />
       <CurrencyInput label={t('investments.charity')} value={inv.charity} onChange={(v) => updateInvestments({ charity: v })} />
 
-    </div>
-  );
-}
-
-function AdvisorRow({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
-  return (
-    <div className="flex justify-between">
-      <span className="text-slate-400">{label}</span>
-      <span className={`font-semibold ${highlight ? 'text-[#BBFF47]' : 'text-slate-200'}`}>{formatBDT(value)}</span>
     </div>
   );
 }
