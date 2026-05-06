@@ -11,7 +11,9 @@ export function ToggleCard({ title, description, children, defaultOpen = false }
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className={`border rounded-lg mb-3 ${open ? 'border-brand bg-brand-50' : 'border-slate-200 bg-white'}`}>
+    <div className={`border rounded-xl mb-3 overflow-hidden ${
+      open ? 'border-[rgba(187,255,71,0.3)] bg-[rgba(187,255,71,0.04)]' : 'border-[#1E2D47] bg-[#0F1828]/40'
+    }`}>
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -19,17 +21,20 @@ export function ToggleCard({ title, description, children, defaultOpen = false }
         aria-expanded={open}
       >
         <div>
-          <span className="font-medium text-sm text-slate-800">{title}</span>
+          <span className="font-medium text-sm text-slate-200">{title}</span>
           {description && !open && (
             <p className="text-xs text-slate-500 mt-0.5">{description}</p>
           )}
         </div>
-        <span className={`text-brand transition-transform ${open ? 'rotate-180' : ''} text-xl leading-none`}>
-          ›
-        </span>
+        <svg
+          className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
       </button>
       {open && (
-        <div className="px-4 pb-4 border-t border-slate-200">
+        <div className="px-4 pb-4 border-t border-[#1E2D47]">
           {children}
         </div>
       )}
@@ -54,16 +59,16 @@ export function Switch({ label, checked, onChange, id }: SwitchProps) {
         id={switchId}
         tabIndex={0}
         onClick={() => onChange(!checked)}
-        onKeyDown={(e) => e.key === 'Enter' || e.key === ' ' ? onChange(!checked) : null}
-        className={`relative inline-flex h-5 w-9 flex-shrink-0 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand ${
-          checked ? 'bg-brand' : 'bg-slate-300'
+        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ' ? onChange(!checked) : null)}
+        className={`relative inline-flex h-5 w-9 flex-shrink-0 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#BBFF47] ${
+          checked ? 'bg-[#BBFF47]' : 'bg-[#1E2D47]'
         }`}
       >
-        <span className={`inline-block h-4 w-4 mt-0.5 rounded-full bg-white shadow transform transition-transform ${
-          checked ? 'translate-x-4' : 'translate-x-0.5'
+        <span className={`inline-block h-4 w-4 mt-0.5 rounded-full shadow transform transition-transform ${
+          checked ? 'translate-x-4 bg-[#0F1828]' : 'translate-x-0.5 bg-slate-400'
         }`} />
       </div>
-      <span className="text-sm text-slate-700">{label}</span>
+      <span className="text-sm text-slate-300">{label}</span>
     </label>
   );
 }

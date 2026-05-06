@@ -1,8 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  font-size: 18px;
+}
 
 * {
   box-sizing: border-box;
@@ -10,31 +14,383 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f8fafc;
-  color: #1e293b;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background-color: #0F1828;
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .font-bn {
   font-family: 'Hind Siliguri', sans-serif;
 }
 
-/* Print styles */
+/* ── Dark card utility ── */
+.dark-card {
+  background: #172035;
+  border-radius: 1rem;
+  border: 1px solid #1E2D47;
+}
+
+/* ── Animated result value ── */
+.result-value {
+  transition: color 0.25s ease;
+}
+
+/* ── Progress bar percentage label ── */
+.progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #BBFF47;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Section card ── */
+.section-card {
+  background: #172035;
+  border-radius: 0.75rem;
+  border: 1px solid #1E2D47;
+  border-left: 4px solid #BBFF47;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.section-card-header {
+  padding: 0.625rem 1rem;
+  background: rgba(15, 24, 40, 0.5);
+  border-bottom: 1px solid #1E2D47;
+}
+
+.section-card-body {
+  padding: 0.25rem 1rem;
+}
+
+/* ── Input field ── */
+.input-field {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: #0F1828;
+  border: 1px solid #1E2D47;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #e2e8f0;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: rgba(187, 255, 71, 0.5);
+  box-shadow: 0 0 0 3px rgba(187, 255, 71, 0.12);
+}
+
+.input-field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-field::placeholder {
+  color: #475569;
+}
+
+/* ── Currency prefix wrapper ── */
+.currency-wrapper {
+  position: relative;
+}
+
+.currency-prefix {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 0.75rem;
+  color: #64748b;
+  font-size: 0.875rem;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Summary table rows ── */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #1E2D47;
+  font-size: 0.875rem;
+}
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+/* ── Sidebar group label ── */
+.sidebar-group-label {
+  padding: 1.25rem 1rem 0.375rem;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #475569;
+  user-select: none;
+}
+
+/* ── Badge styles ── */
+.badge-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(187, 255, 71, 0.15);
+  color: #BBFF47;
+  border: 1px solid rgba(187, 255, 71, 0.3);
+}
+
+/* ── Global dark input overrides ── */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+textarea {
+  background-color: #0F1828;
+  border-color: #1E2D47;
+  color: #e2e8f0;
+}
+
+/* ── Interactive button press ── */
+button {
+  transform-origin: center;
+  user-select: none;
+}
+
+/* ── Thumbnail card hover lift ── */
+.thumb-card {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease !important;
+  will-change: transform;
+}
+.thumb-card:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.04) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+}
+.thumb-card:active:not(:disabled) {
+  transform: scale(0.95) !important;
+  transition: transform 0.08s ease !important;
+}
+
+/* ── Animated step content ── */
+.step-content-enter {
+  animation: stepEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes stepEnter {
+  from { opacity: 0; transform: translateY(24px) scale(0.99); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+/* ── Optional section slide-in ── */
+.section-slide-in {
+  animation: sectionIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(16px); max-height: 0; }
+  to   { opacity: 1; transform: translateY(0);    max-height: 500px; }
+}
+
+/* ── Result number flash ── */
+.num-flash {
+  animation: numFlash 0.5s ease forwards;
+}
+@keyframes numFlash {
+  0%   { color: #BBFF47; }
+  100% { color: inherit; }
+}
+
+/* ── Modal backdrop overlay ── */
+.modal-backdrop {
+  animation: backdropIn 0.2s ease forwards;
+}
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal card ── */
+.modal-card {
+  animation: modalCardIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes modalCardIn {
+  from { opacity: 0; transform: scale(0.88) translateY(16px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+/* ── Header logo spin on hover ── */
+.logo-star {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-block;
+}
+.logo-star:hover {
+  transform: rotate(72deg) scale(1.15);
+}
+
+/* ── Nav tab hover ── */
+.nav-tab {
+  position: relative;
+  overflow: hidden;
+}
+.nav-tab::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.06);
+  opacity: 0;
+  transition: opacity 0.15s;
+  border-radius: inherit;
+}
+.nav-tab:hover::after { opacity: 1; }
+
+/* ── Right panel value row hover ── */
+.result-row-hover {
+  transition: background 0.15s;
+  border-radius: 6px;
+  margin: 0 -6px;
+  padding: 0 6px;
+}
+.result-row-hover:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  background-color: #0F1828;
+  border-color: rgba(187, 255, 71, 0.5);
+  box-shadow: 0 0 0 3px rgba(187, 255, 71, 0.12);
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #475569;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  accent-color: #BBFF47;
+}
+
+select {
+  background-color: #0F1828;
+  border-color: #1E2D47;
+  color: #e2e8f0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.5rem;
+}
+
+select:focus {
+  background-color: #0F1828;
+  border-color: rgba(187, 255, 71, 0.5);
+  box-shadow: 0 0 0 3px rgba(187, 255, 71, 0.12);
+  outline: none;
+}
+
+select option {
+  background-color: #172035;
+  color: #e2e8f0;
+}
+
+/* ── Focus styles for accessibility ── */
+:focus-visible {
+  outline: 2px solid rgba(187, 255, 71, 0.6);
+  outline-offset: 2px;
+}
+
+/* ── Dark-context overrides for step components ── */
+.step-dark label {
+  color: #cbd5e1;
+}
+
+.step-dark h2,
+.step-dark h3 {
+  color: #f1f5f9;
+}
+
+.step-dark p.text-slate-500,
+.step-dark span.text-slate-500,
+.step-dark p.text-slate-400,
+.step-dark .text-slate-600 {
+  color: #64748b;
+}
+
+.step-dark .text-slate-700,
+.step-dark .text-slate-800 {
+  color: #cbd5e1;
+}
+
+.step-dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #fcd34d;
+}
+
+.step-dark .border-slate-100,
+.step-dark .border-slate-200 {
+  border-color: #1E2D47;
+}
+
+.step-dark .border-slate-300 {
+  border-color: #253A5E;
+}
+
+/* Active selection buttons */
+.step-dark button.border-brand.bg-brand {
+  border-color: #BBFF47;
+  background-color: rgba(187, 255, 71, 0.12);
+  color: #BBFF47;
+}
+
+.step-dark button.border-brand.bg-brand-50,
+.step-dark button.border-brand {
+  border-color: rgba(187, 255, 71, 0.5);
+  background-color: rgba(187, 255, 71, 0.08);
+  color: #BBFF47;
+}
+
+.step-dark .text-brand {
+  color: #BBFF47;
+}
+
+.step-dark button.border-slate-200 {
+  border-color: #1E2D47;
+  color: #94a3b8;
+}
+
+.step-dark button.border-slate-200:hover {
+  border-color: rgba(187, 255, 71, 0.4);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* ── Print styles ── */
 @media print {
   .no-print { display: none !important; }
   .print-only { display: block !important; }
-  body { background: white; }
+  body { background: white; color: black; }
+  .section-card { box-shadow: none; border: 1px solid #e2e8f0; background: white; }
 }
 
 .print-only { display: none; }
 
-/* Smooth number transitions in results panel */
-.result-value {
-  transition: color 0.2s ease;
-}
-
-/* Focus styles for accessibility */
-:focus-visible {
-  outline: 2px solid #006A4E;
-  outline-offset: 2px;
-}
+/* ── Scrollbar dark theme ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0F1828; }
+::-webkit-scrollbar-thumb { background: #1E2D47; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #253A5E; }

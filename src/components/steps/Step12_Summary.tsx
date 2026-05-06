@@ -9,144 +9,202 @@ export function Step12_Summary() {
   const { inputs, result } = useTaxStore();
   const cfg = TAX_CONFIG[inputs.ayKey];
   const printRef = useRef<HTMLDivElement>(null);
-
   const isRefund = result.isRefundable;
   const payable = result.netTaxPayable;
+  const isLate = result.isLateFilingApplicable;
 
   function handlePrint() {
     window.print();
   }
 
-  const isLate = result.isLateFilingApplicable;
-
   return (
     <div ref={printRef}>
-      <div className="flex items-center justify-between mb-4 no-print">
-        <h2 className="text-lg font-bold text-slate-800">{t('summary.title')}</h2>
+      {/* Header row */}
+      <div className="flex items-center justify-between mb-5 no-print">
+        <div>
+          <h2 className="text-lg font-bold text-slate-100">{t('summary.title')}</h2>
+          <p className="text-xs text-slate-400 mt-0.5">{cfg.label}</p>
+        </div>
         <button
           onClick={handlePrint}
-          className="px-4 py-2 text-sm font-medium bg-brand text-white rounded-lg hover:bg-brand-dark transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold
+                     bg-brand text-white rounded-xl hover:bg-brand-dark
+                     transition-colors shadow-sm"
         >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-2 4H8v-6h8v6z" />
+          </svg>
           {t('printSummary')}
         </button>
       </div>
 
-      {/* Late filing warning */}
+      {/* Alert banners */}
       {isLate && (
-        <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800">
-          {t('lateFilingWarning', { ay: cfg.label, deadline: new Date(cfg.filingDeadline).toLocaleDateString('en-BD', { day: 'numeric', month: 'long', year: 'numeric' }) })}
+        <div className="mb-4 flex items-start gap-3 bg-red-500/10 border border-red-500/30 rounded-xl p-3.5 text-sm text-red-400">
+          <svg className="w-4 h-4 mt-0.5 shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+          </svg>
+          <span>{t('lateFilingWarning', { ay: cfg.label, deadline: new Date(cfg.filingDeadline).toLocaleDateString('en-BD', { day: 'numeric', month: 'long', year: 'numeric' }) })}</span>
         </div>
       )}
-
-      {/* Prior AY banner */}
       {inputs.ayKey !== '2025-26' && (
-        <div className="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-700">
-          {t('assessmentYear.priorAYBanner', { ay: cfg.label })}
+        <div className="mb-4 flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-xl p-3.5 text-sm text-amber-400">
+          <svg className="w-4 h-4 mt-0.5 shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{t('assessmentYear.priorAYBanner', { ay: cfg.label })}</span>
         </div>
       )}
 
-      {/* Income by head */}
-      <Section title={t('summary.incomeByHead')}>
+      {/* Section: Income by Head */}
+      <Section title={t('summary.incomeByHead')} accentColor="brand">
         {Object.entries(result.incomeByHead).map(([head, amt]) => (
           <SummaryRow key={head} label={t(`summary.heads.${head}`)} value={amt} />
         ))}
         <SummaryRow label={t('summary.totalGrossIncome')} value={result.totalTaxableIncome} bold />
       </Section>
 
-      {/* Threshold */}
-      <Section title="Tax-Free Threshold & Net Taxable Income">
+      {/* Section: Threshold */}
+      <Section title="Tax-Free Threshold & Net Taxable Income" accentColor="slate">
         <SummaryRow label={t('summary.totalTaxableIncome')} value={result.totalTaxableIncome} />
         <SummaryRow label={t('summary.taxFreeThreshold')} value={-result.taxFreeThreshold} />
         <SummaryRow label={t('summary.netTaxableIncome')} value={result.netTaxableIncome} bold />
       </Section>
 
-      {/* Slab breakdown */}
-      <Section title={t('summary.slabBreakdown')}>
+      {/* Section: Slab breakdown */}
+      <Section title={t('summary.slabBreakdown')} accentColor="slate">
         {result.slabBreakdown.map((row, i) => (
-          <div key={i} className="flex justify-between text-sm py-1 border-b border-slate-100 last:border-0">
-            <span className="text-slate-600">{row.slabLabel}</span>
-            <div className="text-right">
-              <span className="text-slate-500 mr-4 text-xs">{(row.rate * 100).toFixed(0)}% × {formatBDT(row.incomeInSlab)}</span>
-              <span className="font-medium text-slate-800 w-24 inline-block text-right">{formatBDT(row.tax)}</span>
+          <div key={i} className="summary-row">
+            <span className="text-slate-500 text-xs">{row.slabLabel}</span>
+            <div className="flex items-center gap-4">
+              <span className="text-slate-400 text-[11px] hidden sm:inline tabular-nums">
+                {(row.rate * 100).toFixed(0)}% × {formatBDT(row.incomeInSlab)}
+              </span>
+              <span className="font-semibold text-slate-200 text-xs tabular-nums w-24 text-right">{formatBDT(row.tax)}</span>
             </div>
           </div>
         ))}
         {result.capitalGainResults.filter(r => r.tax > 0).map((cgr) => (
-          <div key={cgr.id} className="flex justify-between text-sm py-1 border-b border-slate-100">
-            <span className="text-slate-600">Capital Gains ({(cgr.taxRate * 100).toFixed(0)}% flat)</span>
-            <span className="font-medium text-slate-800">{formatBDT(cgr.tax)}</span>
+          <div key={cgr.id} className="summary-row">
+            <span className="text-slate-500 text-xs">Capital Gains ({(cgr.taxRate * 100).toFixed(0)}% flat)</span>
+            <span className="font-semibold text-slate-200 text-xs tabular-nums">{formatBDT(cgr.tax)}</span>
           </div>
         ))}
         <SummaryRow label={t('summary.grossTax')} value={result.grossTax} bold />
       </Section>
 
-      {/* Rebate */}
+      {/* Section: Investment Rebate */}
       {result.investmentRebate > 0 && (
-        <Section title="Investment Tax Rebate (Section 78)">
-          <SummaryRow label={`Total Eligible Investment`} value={result.eligibleInvestment} />
-          <SummaryRow label={`Rebate (15% × ${formatBDT(result.eligibleInvestment)})`} value={-result.investmentRebate} className="text-green-700" />
+        <Section title="Investment Tax Rebate (Section 78)" accentColor="brand">
+          <SummaryRow label="Total Eligible Investment" value={result.eligibleInvestment} />
+          <SummaryRow label={`Rebate (15% × ${formatBDT(result.eligibleInvestment)})`} value={-result.investmentRebate} positive />
           <SummaryRow label={t('summary.netTaxAfterRebate')} value={result.netTaxAfterRebate} bold />
         </Section>
       )}
 
-      {/* Minimum tax */}
-      <Section title="Minimum Tax & Final Tax">
+      {/* Section: Minimum Tax */}
+      <Section title="Minimum Tax & Final Tax" accentColor="slate">
         <SummaryRow label="Net Tax after Rebate" value={result.netTaxAfterRebate} />
         <SummaryRow label={`Minimum Tax (${inputs.residenceArea === 'dhakaCTG' ? 'Dhaka/Ctg CC' : inputs.residenceArea === 'otherCity' ? 'Other City CC' : inputs.residenceArea === 'pourashava' ? 'Pourashava' : 'Rural'})`} value={result.minimumTax} />
         {result.minimumTax > result.netTaxAfterRebate && (
-          <div className="text-xs text-amber-700 bg-amber-50 px-3 py-1.5 rounded my-1">
+          <div className="my-2 flex items-center gap-2 text-[11px] text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-2 rounded-lg">
+            <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01" />
+            </svg>
             Minimum tax applies — overrides computed tax
           </div>
         )}
         <SummaryRow label={t('summary.finalTax')} value={result.finalTax} bold />
         {result.surcharge > 0 && (
           <>
-            <SummaryRow label={t('summary.surcharge')} value={result.surcharge} className="text-orange-700" />
+            <SummaryRow label={t('summary.surcharge')} value={result.surcharge} warning />
             <SummaryRow label={t('summary.totalTaxPlusSurcharge')} value={result.totalTaxPlusSurcharge} bold />
           </>
         )}
       </Section>
 
-      {/* TDS & Advance Tax */}
-      <Section title="Less: Tax Credits">
-        {result.tdsTotal > 0 && <SummaryRow label={t('summary.tdsTotal')} value={-result.tdsTotal} className="text-green-700" />}
-        {result.advanceTax > 0 && <SummaryRow label={t('summary.advanceTax')} value={-result.advanceTax} className="text-green-700" />}
-      </Section>
+      {/* Section: Tax Credits */}
+      {(result.tdsTotal > 0 || result.advanceTax > 0) && (
+        <Section title="Less: Tax Credits" accentColor="brand">
+          {result.tdsTotal > 0 && <SummaryRow label={t('summary.tdsTotal')} value={-result.tdsTotal} positive />}
+          {result.advanceTax > 0 && <SummaryRow label={t('summary.advanceTax')} value={-result.advanceTax} positive />}
+        </Section>
+      )}
 
-      {/* Final box */}
-      <div className={`mt-6 rounded-xl p-5 border-2 ${isRefund ? 'border-green-400 bg-green-50' : payable === 0 ? 'border-slate-300 bg-slate-50' : 'border-orange-400 bg-orange-50'}`}>
-        <p className="text-sm font-medium text-slate-500 mb-1">
-          {isRefund ? t('summary.refundable') : t('summary.netPayable')}
-        </p>
-        <p className={`text-4xl font-bold ${isRefund ? 'text-green-700' : payable === 0 ? 'text-slate-700' : 'text-orange-700'}`}>
-          {formatBDT(Math.abs(payable))}
-        </p>
-        <p className="text-xs text-slate-500 mt-2">
-          Assessment Year: {cfg.label} · Filing deadline: {new Date(cfg.filingDeadline).toLocaleDateString('en-BD', { day: 'numeric', month: 'long', year: 'numeric' })}
-        </p>
+      {/* Final amount box */}
+      <div className={`mb-4 mt-6 bg-[#0F1828] rounded-xl border-l-4 border border-[#1E2D47] overflow-hidden ${
+        isRefund ? 'border-l-[#BBFF47]' : payable === 0 ? 'border-l-[#253A5E]' : 'border-l-orange-500'
+      }`}>
+        <div className="px-4 py-2.5 bg-[#172035] border-b border-[#1E2D47]">
+          <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            {isRefund ? t('summary.refundable') : t('summary.netPayable')}
+          </h3>
+        </div>
+        <div className="px-6 py-5 flex items-center justify-between">
+          <p className={`text-4xl font-bold result-value tabular-nums ${
+            isRefund ? 'text-[#BBFF47]' : payable === 0 ? 'text-slate-300' : 'text-orange-400'
+          }`}>
+            {formatBDT(Math.abs(payable))}
+          </p>
+          <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${
+            isRefund ? 'bg-[#BBFF47] text-[#0F1828]'
+            : payable === 0 ? 'bg-[#253A5E] text-slate-300'
+            : 'bg-orange-500 text-white'
+          }`}>
+            {isRefund ? 'REFUND' : payable === 0 ? 'NIL' : 'PAYABLE'}
+          </span>
+        </div>
       </div>
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+// ── Sub-components ────────────────────────────────────────────────────────
+
+type AccentColor = 'brand' | 'slate' | 'orange';
+
+const borderColorMap: Record<AccentColor, string> = {
+  brand: 'border-[#BBFF47]',
+  slate: 'border-[#253A5E]',
+  orange: 'border-orange-400',
+};
+
+function Section({ title, children, accentColor = 'brand' }: {
+  title: string;
+  children: React.ReactNode;
+  accentColor?: AccentColor;
+}) {
   return (
-    <div className="mb-4">
-      <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">{title}</h3>
-      <div className="bg-slate-50 rounded-lg border border-slate-200 px-4 py-2">
+    <div className={`mb-4 bg-[#0F1828] rounded-xl border-l-4 ${borderColorMap[accentColor]} overflow-hidden border border-[#1E2D47]`}>
+      <div className="px-4 py-2.5 bg-[#172035] border-b border-[#1E2D47]">
+        <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{title}</h3>
+      </div>
+      <div className="px-4 py-1">
         {children}
       </div>
     </div>
   );
 }
 
-function SummaryRow({ label, value, bold, className }: {
-  label: string; value: number; bold?: boolean; className?: string;
+function SummaryRow({ label, value, bold, positive, warning, className }: {
+  label: string;
+  value: number;
+  bold?: boolean;
+  positive?: boolean;
+  warning?: boolean;
+  className?: string;
 }) {
   return (
-    <div className={`flex justify-between items-center py-1.5 border-b border-slate-100 last:border-0 text-sm ${className ?? ''}`}>
-      <span className={bold ? 'font-semibold text-slate-800' : 'text-slate-600'}>{label}</span>
-      <span className={bold ? 'font-bold text-slate-900' : 'text-slate-700'}>{formatBDT(value)}</span>
+    <div className={`summary-row ${className ?? ''}`}>
+      <span className={`${bold ? 'font-semibold text-slate-200' : 'text-slate-400'} text-xs`}>{label}</span>
+      <span className={`text-xs tabular-nums ${
+        bold ? 'font-bold text-white'
+        : positive ? 'font-medium text-[#BBFF47]'
+        : warning ? 'font-medium text-orange-400'
+        : 'text-slate-300'
+      }`}>
+        {formatBDT(value)}
+      </span>
     </div>
   );
 }

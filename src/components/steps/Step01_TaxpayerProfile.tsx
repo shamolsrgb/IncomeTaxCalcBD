@@ -1,12 +1,67 @@
 import { useTranslation } from 'react-i18next';
 import { useTaxStore } from '../../store/useTaxStore';
-import { CurrencyInput } from '../ui/CurrencyInput';
-import { isSenior } from '../../utils/date';
 import { TAX_CONFIG } from '../../config/taxConfig';
 import type { TaxpayerCategory, ResidenceArea, EmployerType } from '../../types/tax';
 
 const CATEGORIES: TaxpayerCategory[] = ['general', 'female', 'senior', 'disabled', 'freedomFighter', 'thirdGender'];
+
+function CategoryIcon({ cat }: { cat: TaxpayerCategory }) {
+  if (cat === 'general') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <circle cx="12" cy="8" r="4" /><path strokeLinecap="round" d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+    </svg>
+  );
+  if (cat === 'female') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <circle cx="12" cy="8" r="4" /><path strokeLinecap="round" d="M12 13v8M9 18h6" />
+    </svg>
+  );
+  if (cat === 'senior') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <circle cx="12" cy="7" r="3" /><path strokeLinecap="round" d="M9 13s-2 1-2 4l1 4h8l1-4c0-3-2-4-2-4M10 21h4" /><path strokeLinecap="round" d="M14 16l2 2 2-1" />
+    </svg>
+  );
+  if (cat === 'disabled') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <circle cx="12" cy="4" r="2" /><path strokeLinecap="round" strokeLinejoin="round" d="M10 8h4l1 5H9l-1 3a5 5 0 1 0 9.2 2" />
+    </svg>
+  );
+  if (cat === 'freedomFighter') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2l2.4 4.9L20 7.6l-4 3.9 1 5.5L12 14.4l-5 2.6 1-5.5L4 7.6l5.6-.7z" />
+    </svg>
+  );
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <circle cx="12" cy="8" r="4" /><path strokeLinecap="round" d="M12 13v5M9 16h6M17 3l2-1M5 3l2 1M17 3l-2 2M7 3l2 2" />
+    </svg>
+  );
+}
+
 const EMPLOYER_TYPES: EmployerType[] = ['govt', 'private', 'selfEmployed', 'retired'];
+
+function EmployerIcon({ et }: { et: EmployerType }) {
+  if (et === 'govt') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M3 10h18M12 3L3 10h18L12 3zM6 10v11M10 10v11M14 10v11M18 10v11" />
+    </svg>
+  );
+  if (et === 'private') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <rect x="2" y="7" width="20" height="14" rx="2" /><path strokeLinecap="round" d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 12v4M10 14h4" />
+    </svg>
+  );
+  if (et === 'selfEmployed') return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <circle cx="12" cy="8" r="4" /><path strokeLinecap="round" d="M6 20v-1a6 6 0 0 1 12 0v1" /><path strokeLinecap="round" d="M16 3.5A4 4 0 0 1 18 7" />
+    </svg>
+  );
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <circle cx="12" cy="8" r="4" /><path strokeLinecap="round" d="M6 20v-1a6 6 0 0 1 12 0v1M9 14l1.5 4 1.5-2 1.5 2L15 14" />
+    </svg>
+  );
+}
 const AREAS: ResidenceArea[] = ['dhakaCTG', 'otherCity', 'pourashava', 'other'];
 
 export function Step01_TaxpayerProfile() {
@@ -17,74 +72,36 @@ export function Step01_TaxpayerProfile() {
   const threshold = cfg.thresholds[inputs.taxpayerCategory] +
     (inputs.hasDisabledDependent ? cfg.thresholds.disabledDependentExtra : 0);
 
-  function handleDOB(dob: string) {
-    const updates: Partial<typeof inputs> = { dateOfBirth: dob };
-    if (isSenior(dob) && inputs.taxpayerCategory === 'general') {
-      updates.taxpayerCategory = 'senior';
-    }
-    updateInputs(updates);
-  }
-
   return (
     <div>
       <h2 className="text-lg font-bold text-slate-800 mb-4">{t('profile.title')}</h2>
 
-      {/* Name + TIN */}
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t('profile.fullName')}</label>
-          <input
-            type="text"
-            value={(inputs as any).fullName ?? ''}
-            onChange={(e) => updateInputs({ fullName: e.target.value } as any)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand"
-            placeholder="Optional"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">{t('profile.tin')}</label>
-          <input
-            type="text"
-            value={(inputs as any).tin ?? ''}
-            onChange={(e) => updateInputs({ tin: e.target.value } as any)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand"
-            placeholder={t('profile.tinPlaceholder')}
-            maxLength={12}
-          />
-        </div>
-      </div>
-
-      {/* Date of Birth */}
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-700 mb-1">{t('profile.dob')}</label>
-        <input
-          type="date"
-          value={inputs.dateOfBirth}
-          onChange={(e) => handleDOB(e.target.value)}
-          className="w-full sm:w-64 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand"
-        />
-      </div>
-
       {/* Taxpayer Category */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.category')}</label>
-        <div className="grid grid-cols-2 gap-2">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => updateInputs({ taxpayerCategory: cat })}
-              className={`p-2.5 rounded-lg border text-xs font-medium text-left transition-colors ${
-                inputs.taxpayerCategory === cat
-                  ? 'border-brand bg-brand-50 text-brand'
-                  : 'border-slate-200 text-slate-700 hover:border-brand'
-              }`}
-            >
-              {t(`profile.categories.${cat}`)}
-            </button>
-          ))}
+        <div className="grid grid-cols-6 gap-2">
+          {CATEGORIES.map((cat) => {
+            const active = inputs.taxpayerCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => updateInputs({ taxpayerCategory: cat })}
+                className={`thumb-card aspect-square flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 p-2 transition-colors ${
+                  active
+                    ? 'border-[#BBFF47] bg-[#BBFF47]/10 text-[#BBFF47]'
+                    : 'border-[#1E2D47] text-slate-400 hover:border-[#BBFF47]/40 hover:text-slate-200'
+                }`}
+              >
+                <CategoryIcon cat={cat} />
+                <span className="text-[10px] font-semibold text-center leading-tight">
+                  {t(`profile.categories.${cat}`)}
+                </span>
+              </button>
+            );
+          })}
         </div>
-        <p className="text-xs text-brand font-medium mt-2">
+        <p className="text-xs text-[#BBFF47] font-medium mt-2">
           Tax-free threshold: ৳{threshold.toLocaleString('en-IN')}
         </p>
       </div>
@@ -103,21 +120,27 @@ export function Step01_TaxpayerProfile() {
       {/* Employer Type */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.employerType')}</label>
-        <div className="grid grid-cols-2 gap-2">
-          {EMPLOYER_TYPES.map((et) => (
-            <button
-              key={et}
-              type="button"
-              onClick={() => updateInputs({ employerType: et })}
-              className={`p-2.5 rounded-lg border text-xs font-medium text-left transition-colors ${
-                inputs.employerType === et
-                  ? 'border-brand bg-brand-50 text-brand'
-                  : 'border-slate-200 text-slate-700 hover:border-brand'
-              }`}
-            >
-              {t(`profile.employerTypes.${et}`)}
-            </button>
-          ))}
+        <div className="grid grid-cols-6 gap-2">
+          {EMPLOYER_TYPES.map((et) => {
+            const active = inputs.employerType === et;
+            return (
+              <button
+                key={et}
+                type="button"
+                onClick={() => updateInputs({ employerType: et })}
+                className={`thumb-card aspect-square flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 p-2 transition-colors ${
+                  active
+                    ? 'border-[#BBFF47] bg-[#BBFF47]/10 text-[#BBFF47]'
+                    : 'border-[#1E2D47] text-slate-400 hover:border-[#BBFF47]/40 hover:text-slate-200'
+                }`}
+              >
+                <EmployerIcon et={et} />
+                <span className="text-[10px] font-semibold text-center leading-tight">
+                  {t(`profile.employerTypes.${et}`)}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -138,14 +161,6 @@ export function Step01_TaxpayerProfile() {
         </p>
       </div>
 
-      {/* Net Wealth */}
-      <CurrencyInput
-        label={t('profile.netWealth')}
-        value={inputs.netWealth}
-        onChange={(v) => updateInputs({ netWealth: v })}
-        tooltip={t('tooltipSurcharge')}
-        note="Used to compute surcharge on net wealth above ৳4 crore"
-      />
     </div>
   );
 }

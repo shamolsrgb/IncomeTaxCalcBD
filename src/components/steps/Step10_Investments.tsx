@@ -42,32 +42,6 @@ export function Step10_Investments() {
       <CurrencyInput label={t('investments.zakat')} value={inv.zakat} onChange={(v) => updateInvestments({ zakat: v })} />
       <CurrencyInput label={t('investments.charity')} value={inv.charity} onChange={(v) => updateInvestments({ charity: v })} />
 
-      {/* Investment Advisor Widget */}
-      {!isNRB && (
-        <div className={`mt-6 rounded-xl p-4 border-2 ${adv.isMaximised ? 'border-green-400 bg-green-50' : 'border-orange-300 bg-orange-50'}`}>
-          <h3 className="text-sm font-bold text-slate-800 mb-3">{t('investments.advisorTitle')}</h3>
-
-          <div className="space-y-2 text-sm">
-            <AdvisorRow label={t('investments.maxEligible')} value={adv.maxEligibleInvestment} />
-            <AdvisorRow label={t('investments.currentEligible')} value={adv.currentEligibleInvestment} />
-            <AdvisorRow label={t('investments.currentRebate')} value={adv.currentRebate} highlight />
-            <AdvisorRow label={t('investments.maxRebate')} value={adv.maxPossibleRebate} />
-          </div>
-
-          {adv.isMaximised ? (
-            <p className="mt-3 text-sm font-semibold text-green-700">✓ {t('investments.maximisedCallout')}</p>
-          ) : (
-            <div className="mt-3 bg-orange-100 rounded-lg p-3">
-              <p className="text-sm font-semibold text-orange-800">
-                {t('investments.gapCallout', {
-                  gap: formatBDT(adv.investmentGap),
-                  saving: formatBDT(adv.additionalSavingIfGapFilled),
-                })}
-              </p>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
@@ -75,8 +49,8 @@ export function Step10_Investments() {
 function AdvisorRow({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
   return (
     <div className="flex justify-between">
-      <span className="text-slate-600">{label}</span>
-      <span className={`font-semibold ${highlight ? 'text-brand' : 'text-slate-800'}`}>{formatBDT(value)}</span>
+      <span className="text-slate-400">{label}</span>
+      <span className={`font-semibold ${highlight ? 'text-[#BBFF47]' : 'text-slate-200'}`}>{formatBDT(value)}</span>
     </div>
   );
 }
