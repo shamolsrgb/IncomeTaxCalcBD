@@ -253,7 +253,7 @@ button {
   transition: background 0.15s;
   border-radius: 6px;
   margin: 0 -6px;
-  padding: 0 6px;
+  padding: 4px 6px;
 }
 .result-row-hover:hover {
   background: rgba(255,255,255,0.04);

@@ -30,10 +30,9 @@
     "5": "Business / Profession",
     "6": "Capital Gains",
     "7": "Other Income",
-    "8": "Loans & Liabilities",
-    "9": "Investments & Rebate",
-    "10": "TDS & Advance Tax",
-    "11": "Tax Summary"
+    "8": "Investments & Rebate",
+    "9": "TDS & Advance Tax",
+    "10": "Tax Summary"
   },
   "profile": {
     "title": "Taxpayer Profile",
@@ -79,9 +78,9 @@
     "travelAllowance": "Travelling Allowance / Daily Allowance (TA/DA)",
     "entertainmentAllowance": "Entertainment Allowance",
     "uniformAllowance": "Uniform / Dress Allowance",
-    "festivalBonusCount": "Number of festival bonuses received (max 2)",
+    "festivalBonusCount": "Festival bonuses",
     "gpfEmployer": "GPF — Employer Contribution (exempt)",
-    "gpfOwn": "GPF — Own Contribution (rebate eligible)",
+    "gpfOwn": "GPF Contribution",
     "pensionCommuted": "Pension (Commuted / Lump-sum) — Exempt",
     "pensionUncommuted": "Pension (Uncommuted / Monthly) — Taxable",
     "gratuity": "Gratuity from Approved Fund (exempt)",

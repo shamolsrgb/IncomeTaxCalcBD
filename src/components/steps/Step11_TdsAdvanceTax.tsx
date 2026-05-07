@@ -15,30 +15,32 @@ export function Step11_TdsAdvanceTax() {
     <div>
       <h2 className="text-lg font-bold text-slate-100 mb-4">{t('tds.title')}</h2>
 
-      <CurrencyInput
-        label={t('tds.salary')}
-        value={tds.salary}
-        onChange={(v) => updateTdsCredits({ salary: v })}
-        note="Total TDS deducted from salary by employer during the year"
-      />
-      <CurrencyInput
-        label={t('tds.bankInterest')}
-        value={tds.bankInterest}
-        onChange={(v) => updateTdsCredits({ bankInterest: v })}
-        note={autoBankTDS > 0 ? `Auto-computed: ৳${autoBankTDS.toLocaleString('en-IN')} (@10%) — enter actual if different` : undefined}
-        badge={tds.bankInterest === 0 && autoBankTDS > 0 ? `Will use auto ৳${autoBankTDS.toLocaleString('en-IN')}` : undefined}
-      />
-      <CurrencyInput
-        label={t('tds.sanchayapatraInterest')}
-        value={tds.sanchayapatraInterest}
-        onChange={(v) => updateTdsCredits({ sanchayapatraInterest: v })}
-        note={autoSanchTDS > 0 ? `Auto-computed: ৳${autoSanchTDS.toLocaleString('en-IN')} (@10%)` : undefined}
-        badge={tds.sanchayapatraInterest === 0 && autoSanchTDS > 0 ? `Will use auto ৳${autoSanchTDS.toLocaleString('en-IN')}` : undefined}
-      />
-      <CurrencyInput label={t('tds.houseRent')} value={tds.houseRent} onChange={(v) => updateTdsCredits({ houseRent: v })} note="TDS deducted by tenant @5% on rent received" />
-      <CurrencyInput label={t('tds.professional')} value={tds.professional} onChange={(v) => updateTdsCredits({ professional: v })} note="TDS on professional/consultancy income @10%" />
-      <CurrencyInput label={t('tds.dividend')} value={tds.dividend} onChange={(v) => updateTdsCredits({ dividend: v })} />
-      <CurrencyInput label={t('tds.other')} value={tds.other} onChange={(v) => updateTdsCredits({ other: v })} />
+      <div className="grid grid-cols-2 gap-x-4">
+        <CurrencyInput
+          label={t('tds.salary')}
+          value={tds.salary}
+          onChange={(v) => updateTdsCredits({ salary: v })}
+          note="Total TDS deducted from salary by employer during the year"
+        />
+        <CurrencyInput
+          label={t('tds.bankInterest')}
+          value={tds.bankInterest}
+          onChange={(v) => updateTdsCredits({ bankInterest: v })}
+          note={autoBankTDS > 0 ? `Auto-computed: ৳${autoBankTDS.toLocaleString('en-IN')} (@10%) — enter actual if different` : undefined}
+          badge={tds.bankInterest === 0 && autoBankTDS > 0 ? `Will use auto ৳${autoBankTDS.toLocaleString('en-IN')}` : undefined}
+        />
+        <CurrencyInput
+          label={t('tds.sanchayapatraInterest')}
+          value={tds.sanchayapatraInterest}
+          onChange={(v) => updateTdsCredits({ sanchayapatraInterest: v })}
+          note={autoSanchTDS > 0 ? `Auto-computed: ৳${autoSanchTDS.toLocaleString('en-IN')} (@10%)` : undefined}
+          badge={tds.sanchayapatraInterest === 0 && autoSanchTDS > 0 ? `Will use auto ৳${autoSanchTDS.toLocaleString('en-IN')}` : undefined}
+        />
+        <CurrencyInput label={t('tds.houseRent')} value={tds.houseRent} onChange={(v) => updateTdsCredits({ houseRent: v })} note="TDS deducted by tenant @5% on rent received" />
+        <CurrencyInput label={t('tds.professional')} value={tds.professional} onChange={(v) => updateTdsCredits({ professional: v })} note="TDS on professional/consultancy income @10%" />
+        <CurrencyInput label={t('tds.dividend')} value={tds.dividend} onChange={(v) => updateTdsCredits({ dividend: v })} />
+        <CurrencyInput label={t('tds.other')} value={tds.other} onChange={(v) => updateTdsCredits({ other: v })} />
+      </div>
 
       <div className="border-t border-[#1E2D47] pt-4 mt-2">
         <CurrencyInput

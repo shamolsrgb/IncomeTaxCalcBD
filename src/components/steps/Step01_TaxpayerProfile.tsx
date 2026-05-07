@@ -118,7 +118,8 @@ export function Step01_TaxpayerProfile() {
       </label>
 
       {/* Employer Type */}
-      <div className="mb-4">
+      <div className="mb-4 mt-6">
+        <div className="border-t border-[#1E2D47] mb-6" />
         <label className="block text-sm font-medium text-slate-300 mb-2">{t('profile.employerType')}</label>
         <div className="grid grid-cols-6 gap-2">
           {EMPLOYER_TYPES.map((et) => {
@@ -145,7 +146,8 @@ export function Step01_TaxpayerProfile() {
       </div>
 
       {/* Residence Area */}
-      <div className="mb-4">
+      <div className="mb-4 mt-6">
+        <div className="border-t border-[#1E2D47] mb-6" />
         <label className="block text-sm font-medium text-slate-300 mb-2">{t('profile.residenceArea')}</label>
         <select
           value={inputs.residenceArea}

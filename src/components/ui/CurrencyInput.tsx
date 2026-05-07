@@ -12,10 +12,11 @@ interface Props {
   id?: string;
   disabled?: boolean;
   min?: number;
+  action?: { label: string; onClick: () => void };
 }
 
-export function CurrencyInput({ label, value, onChange, tooltip, note, badge, id, disabled, min = 0 }: Props) {
-  const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
+export function CurrencyInput({ label, value, onChange, tooltip, note, badge, id, disabled, min = 0, action }: Props) {
+  const inputId = id ?? label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const [raw, setRaw] = useState(value === 0 ? '' : String(value));
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -43,15 +44,28 @@ export function CurrencyInput({ label, value, onChange, tooltip, note, badge, id
 
   return (
     <div className="mb-4">
-      <label htmlFor={inputId} className="block text-sm font-medium text-slate-300 mb-1">
-        {label}
-        {tooltip && (
-          <span
-            className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#1E2D47] text-slate-400 text-xs cursor-help"
-            title={tooltip}
-          >?</span>
+      <div className="flex items-center justify-between mb-1">
+        <label htmlFor={inputId} className="block text-sm font-medium text-slate-300">
+          {label}
+          {tooltip && (
+            <button
+              type="button"
+              aria-label={tooltip}
+              className="ml-1 inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#1E2D47] text-slate-400 text-xs cursor-help focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.5)]"
+            >?</button>
+          )}
+        </label>
+        {action && (
+          <button
+            type="button"
+            onClick={action.onClick}
+            aria-label={`${action.label}: ${label}`}
+            className="text-xs text-[#BBFF47] font-medium hover:opacity-70 transition-opacity"
+          >
+            {action.label}
+          </button>
         )}
-      </label>
+      </div>
       <div ref={wrapperRef} className="relative" style={{ transformOrigin: 'left center' }}>
         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-sm select-none">৳</span>
         <input

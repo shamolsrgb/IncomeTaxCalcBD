@@ -39,7 +39,7 @@ export interface SalaryInputGovt {
   travelAllowance: number;
   entertainmentAllowance: number;
   uniformAllowance: number;
-  festivalBonusCount: number; // 1 or 2
+  festivalBonusCount: number; // actual amount received in BDT
   gpfContributionEmployer: number;
   ownGpfContribution: number;
   pensionCommuted: number;

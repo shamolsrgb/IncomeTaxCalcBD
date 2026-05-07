@@ -11,7 +11,6 @@ import { Step05_Agriculture } from './Step05_Agriculture';
 import { Step06_Business } from './Step06_Business';
 import { Step07_CapitalGains } from './Step07_CapitalGains';
 import { Step08_OtherIncome } from './Step08_OtherIncome';
-import { Step09_Loans } from './Step09_Loans';
 import { Step10_Investments } from './Step10_Investments';
 import { Step11_TdsAdvanceTax } from './Step11_TdsAdvanceTax';
 import { Step12_Summary } from './Step12_Summary';
@@ -25,7 +24,6 @@ const STEPS = [
   Step06_Business,
   Step07_CapitalGains,
   Step08_OtherIncome,
-  Step09_Loans,
   Step10_Investments,
   Step11_TdsAdvanceTax,
   Step12_Summary,
@@ -34,9 +32,9 @@ const STEPS = [
 const TAB_STEPS: number[][] = [
   [0],
   [1, 2, 3, 4, 5, 6, 7],
-  [8, 9],
+  [8],
+  [9],
   [10],
-  [11],
 ];
 
 export function StepContainer() {
@@ -101,11 +99,11 @@ export function StepContainer() {
   const stepTitle = t(`steps.${currentStep}`);
 
   return (
-    <div className="max-w-6xl mx-auto px-5 py-8">
+    <div className="max-w-[1272px] mx-auto px-5 py-8">
       {/* Page heading */}
       <div ref={headingRef} className="mb-6">
         <h1 className="text-2xl font-bold text-white">{stepTitle}</h1>
-        <p className="text-sm text-slate-400 mt-0.5">{stepTitle}</p>
+        <p className="text-sm text-slate-400 mt-0.5">Step {currentStep + 1} of {total + 1}</p>
       </div>
 
       {/* Two-column layout */}
@@ -127,7 +125,7 @@ export function StepContainer() {
                          disabled:opacity-30 disabled:cursor-not-allowed
                          transition-colors duration-150"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
               {t('prev')}
@@ -141,7 +139,7 @@ export function StepContainer() {
                            transition-colors duration-150 shadow-sm"
               >
                 {isLastInTab ? 'Next Section' : t('next')}
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </button>
@@ -150,10 +148,10 @@ export function StepContainer() {
         </div>
 
         {/* Right column: stacked cards */}
-        <div ref={rightPanelRef} className="w-64 shrink-0 flex flex-col gap-4 no-print">
+        <div ref={rightPanelRef} className="w-[376px] shrink-0 flex flex-col gap-4 no-print sticky top-8 self-start">
           {/* NET TAX PAYABLE card */}
           <div className="bg-[#172035] rounded-2xl border border-[#1E2D47] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+            <p className="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-1">
               {isRefund ? t('summary.refundable') : t('summary.netPayable')}
             </p>
             <p
@@ -164,7 +162,7 @@ export function StepContainer() {
             >
               {formatBDT(Math.abs(payable))}
             </p>
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold mb-5 ${
+            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold mb-5 ${
               isRefund
                 ? 'bg-[#BBFF47]/20 text-[#BBFF47]'
                 : payable === 0
@@ -200,9 +198,9 @@ export function StepContainer() {
           {inputs.taxpayerType !== 'nrb' && (
             <div className={`bg-[#172035] rounded-2xl border border-[#1E2D47] shadow-[0_4px_20px_rgba(0,0,0,0.3)] overflow-hidden border-l-4 ${result.advisorMetrics.isMaximised ? 'border-l-[#BBFF47]' : 'border-l-orange-500'}`}>
               <div className="px-4 py-2.5 border-b border-[#1E2D47]">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t('investments.advisorTitle')}</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('investments.advisorTitle')}</p>
               </div>
-              <div className="px-4 py-3 space-y-1.5 text-[11px]">
+              <div className="px-4 py-3 space-y-1.5 text-[13px]">
                 <div className="flex justify-between gap-2 result-row-hover">
                   <span className="text-slate-400">{t('investments.maxEligible')}</span>
                   <span className="font-medium text-slate-200 tabular-nums">{formatBDT(result.advisorMetrics.maxEligibleInvestment)}</span>
@@ -221,10 +219,10 @@ export function StepContainer() {
                 </div>
               </div>
               {result.advisorMetrics.isMaximised ? (
-                <p className="px-4 pb-3 text-[11px] font-semibold text-[#BBFF47]">✓ {t('investments.maximisedCallout')}</p>
+                <p className="px-4 pb-3 text-[13px] font-semibold text-[#BBFF47]">✓ {t('investments.maximisedCallout')}</p>
               ) : (
                 <div className="mx-4 mb-4 bg-orange-500/10 border border-orange-500/20 rounded-lg px-3 py-2">
-                  <p className="text-[11px] font-semibold text-orange-400">
+                  <p className="text-[13px] font-semibold text-orange-400">
                     {t('investments.gapCallout', {
                       gap: formatBDT(result.advisorMetrics.investmentGap),
                       saving: formatBDT(result.advisorMetrics.additionalSavingIfGapFilled),
@@ -239,17 +237,19 @@ export function StepContainer() {
 
       {/* Mobile within-tab step dots */}
       {tabGroup.length > 1 && (
-        <div className="flex justify-center gap-1.5 mt-5 no-print">
-          {tabGroup.map((s) => (
+        <nav aria-label="Section steps" className="flex justify-center gap-1.5 mt-5 no-print">
+          {tabGroup.map((s, i) => (
             <button
               key={s}
               onClick={() => setStep(s)}
+              aria-label={`Step ${i + 1} of ${tabGroup.length}`}
+              aria-current={s === currentStep ? 'step' : undefined}
               className={`h-1.5 rounded-full transition-all ${
                 s === currentStep ? 'w-5 bg-[#BBFF47]' : 'w-1.5 bg-[#1E2D47]'
               }`}
             />
           ))}
-        </div>
+        </nav>
       )}
     </div>
   );
@@ -271,13 +271,13 @@ function ResultRow({
   }, [value]);
 
   return (
-    <div className="result-row-hover flex justify-between gap-2 py-1.5">
-      <span className={`text-[11px] leading-snug ${bold ? 'font-semibold text-slate-200' : 'text-slate-400'}`}>
+    <div className="result-row-hover flex justify-between gap-2">
+      <span className={`text-[13px] leading-snug ${bold ? 'font-semibold text-slate-200' : 'text-slate-400'}`}>
         {label}
       </span>
       <span
         ref={spanRef}
-        className={`shrink-0 text-[11px] tabular-nums ${
+        className={`shrink-0 text-[13px] tabular-nums ${
           bold ? 'font-bold text-white'
           : positive ? 'font-medium text-[#BBFF47]'
           : warning ? 'font-medium text-orange-400'

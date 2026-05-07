@@ -24,7 +24,7 @@ type PrivateSection = 'pf' | 'wppf' | 'gratuity' | 'leaveEncashment';
 
 const PRIVATE_OPTIONS: { key: PrivateSection; label: string; description?: string }[] = [
   { key: 'pf', label: 'Provident Fund (PF)' },
-  { key: 'wppf', label: 'WPPF / Profit Share / Bonus', description: "Workers' Profit Participation Fund and other variable pay" },
+  { key: 'wppf', label: 'WPPF / Profit Share / Overtime Pay', description: "Workers' Profit Participation Fund and other variable pay" },
   { key: 'gratuity', label: 'Gratuity' },
   { key: 'leaveEncashment', label: 'Leave Encashment' },
 ];
@@ -85,19 +85,13 @@ function PrivateSalary({ cfg }: { cfg: AYConfig }) {
           badge={s.conveyance > 0 ? `Exempt: ${formatBDT(Math.min(s.conveyance, cfg.conveyanceAllowanceCap))}` : undefined}
         />
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-slate-300 mb-1">{t('salary.festivalBonusCount')}</label>
-          <select
-            value={s.festivalBonusCount}
-            onChange={(e) => updateSalaryPrivate({ festivalBonusCount: Number(e.target.value) })}
-            className="w-full px-3 py-2 bg-[#0F1828] border border-[#1E2D47] rounded-lg text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)]"
-          >
-            {[0, 1, 2].map((n) => <option key={n} value={n}>{n}</option>)}
-          </select>
-          {s.festivalBonusCount > 0 && s.basic > 0 && (
-            <p className="text-xs text-[#BBFF47] mt-1">Exempt: {formatBDT(s.basic * s.festivalBonusCount)}</p>
-          )}
-        </div>
+        <CurrencyInput
+          label={t('salary.festivalBonusCount')}
+          value={s.festivalBonusCount}
+          onChange={(v) => updateSalaryPrivate({ festivalBonusCount: v })}
+          badge={s.festivalBonusCount > 0 && s.basic > 0 ? `Exempt: ${formatBDT(Math.min(s.festivalBonusCount, s.basic * 2))}` : undefined}
+          action={s.basic > 0 ? { label: 'Auto calculate', onClick: () => updateSalaryPrivate({ festivalBonusCount: Math.round((s.basic / 12) * 2) }) } : undefined}
+        />
 
         <CurrencyInput label={t('salary.otherAllowances')} value={s.otherAllowances} onChange={(v) => updateSalaryPrivate({ otherAllowances: v })} />
       </div>
@@ -115,7 +109,7 @@ function PrivateSalary({ cfg }: { cfg: AYConfig }) {
       )}
 
       {active.has('wppf') && (
-        <OptionalSection title="WPPF / Profit Share / Bonus" onRemove={() => remove('wppf')}>
+        <OptionalSection title="WPPF / Profit Share / Overtime Pay" onRemove={() => remove('wppf')}>
           <CurrencyInput
             label={t('salary.wppf')}
             value={s.wppf}
@@ -204,9 +198,9 @@ function GovtSalary({ cfg }: { cfg: AYConfig }) {
         </button>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 grid grid-cols-2 gap-x-4">
+        {/* ── Group 1: Primary fields ── */}
         <CurrencyInput label={t('salary.basic')} value={s.basic} onChange={(v) => updateSalaryGovt({ basic: v })} />
-        <CurrencyInput label={t('salary.da')} value={s.da} onChange={(v) => updateSalaryGovt({ da: v })} />
         <CurrencyInput
           label={t('salary.hraReceived')}
           value={s.hraReceived}
@@ -214,14 +208,6 @@ function GovtSalary({ cfg }: { cfg: AYConfig }) {
           tooltip={t('tooltipHRA')}
           badge={hraExempt > 0 ? `Exempt: ${formatBDT(hraExempt)}` : undefined}
         />
-        <Switch
-          label={t('salary.residingInGovtQuarter')}
-          checked={s.residingInGovtQuarter}
-          onChange={(v) => updateSalaryGovt({ residingInGovtQuarter: v })}
-        />
-        {s.residingInGovtQuarter && (
-          <p className="text-xs text-amber-500 mb-3">HRA is fully taxable when residing in a government quarter.</p>
-        )}
         <CurrencyInput
           label={t('salary.medical')}
           value={s.medical}
@@ -234,26 +220,29 @@ function GovtSalary({ cfg }: { cfg: AYConfig }) {
           onChange={(v) => updateSalaryGovt({ conveyance: v })}
           badge={s.conveyance > 0 ? `Exempt: ${formatBDT(Math.min(s.conveyance, cfg.conveyanceAllowanceCap))}` : undefined}
         />
+        <CurrencyInput
+          label={t('salary.festivalBonusCount')}
+          value={s.festivalBonusCount}
+          onChange={(v) => updateSalaryGovt({ festivalBonusCount: v })}
+          badge={s.festivalBonusCount > 0 && s.basic > 0 ? `Exempt: ${formatBDT(Math.min(s.festivalBonusCount, s.basic * 2))}` : undefined}
+          action={s.basic > 0 ? { label: 'Auto calculate', onClick: () => updateSalaryGovt({ festivalBonusCount: Math.round((s.basic / 12) * 2) }) } : undefined}
+        />
+        <CurrencyInput
+          label={t('salary.gpfOwn')}
+          value={s.ownGpfContribution}
+          onChange={(v) => updateSalaryGovt({ ownGpfContribution: v })}
+          note="Eligible for 15% investment rebate"
+        />
+
+        {/* ── Group 2: Other Allowances ── */}
+        <div className="col-span-2 mt-2 mb-6 flex items-center gap-3">
+          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">Other Allowances</span>
+          <div className="flex-1 border-t border-[#1E2D47]" />
+        </div>
+        <CurrencyInput label={t('salary.da')} value={s.da} onChange={(v) => updateSalaryGovt({ da: v })} />
         <CurrencyInput label={t('salary.travelAllowance')} value={s.travelAllowance} onChange={(v) => updateSalaryGovt({ travelAllowance: v })} note="Fully exempt (official travel reimbursement)" />
         <CurrencyInput label={t('salary.entertainmentAllowance')} value={s.entertainmentAllowance} onChange={(v) => updateSalaryGovt({ entertainmentAllowance: v })} />
         <CurrencyInput label={t('salary.uniformAllowance')} value={s.uniformAllowance} onChange={(v) => updateSalaryGovt({ uniformAllowance: v })} note="Fully exempt for official uniform" />
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-slate-300 mb-1">{t('salary.festivalBonusCount')}</label>
-          <select
-            value={s.festivalBonusCount}
-            onChange={(e) => updateSalaryGovt({ festivalBonusCount: Number(e.target.value) })}
-            className="w-32 px-3 py-2 bg-[#0F1828] border border-[#1E2D47] rounded-lg text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)]"
-          >
-            {[0, 1, 2].map((n) => <option key={n} value={n}>{n}</option>)}
-          </select>
-          {s.festivalBonusCount > 0 && s.basic > 0 && (
-            <p className="text-xs text-[#BBFF47] mt-1">Exempt: {formatBDT(s.basic * s.festivalBonusCount)} (1 month basic per festival)</p>
-          )}
-        </div>
-
-        <CurrencyInput label={t('salary.gpfEmployer')} value={s.gpfContributionEmployer} onChange={(v) => updateSalaryGovt({ gpfContributionEmployer: v })} note="Fully exempt" />
-        <CurrencyInput label={t('salary.gpfOwn')} value={s.ownGpfContribution} onChange={(v) => updateSalaryGovt({ ownGpfContribution: v })} note="Eligible for 15% investment rebate" />
         <CurrencyInput label={t('salary.honorarium')} value={s.honorarium} onChange={(v) => updateSalaryGovt({ honorarium: v })} note="Fully taxable" />
         <CurrencyInput label={t('salary.otherAllowances')} value={s.otherAllowances} onChange={(v) => updateSalaryGovt({ otherAllowances: v })} />
       </div>

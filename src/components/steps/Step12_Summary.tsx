@@ -39,14 +39,6 @@ export function Step12_Summary() {
       </div>
 
       {/* Alert banners */}
-      {isLate && (
-        <div className="mb-4 flex items-start gap-3 bg-red-500/10 border border-red-500/30 rounded-xl p-3.5 text-sm text-red-400">
-          <svg className="w-4 h-4 mt-0.5 shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-          </svg>
-          <span>{t('lateFilingWarning', { ay: cfg.label, deadline: new Date(cfg.filingDeadline).toLocaleDateString('en-BD', { day: 'numeric', month: 'long', year: 'numeric' }) })}</span>
-        </div>
-      )}
       {inputs.ayKey !== '2025-26' && (
         <div className="mb-4 flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-xl p-3.5 text-sm text-amber-400">
           <svg className="w-4 h-4 mt-0.5 shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -131,30 +123,6 @@ export function Step12_Summary() {
         </Section>
       )}
 
-      {/* Final amount box */}
-      <div className={`mb-4 mt-6 bg-[#0F1828] rounded-xl border-l-4 border border-[#1E2D47] overflow-hidden ${
-        isRefund ? 'border-l-[#BBFF47]' : payable === 0 ? 'border-l-[#253A5E]' : 'border-l-orange-500'
-      }`}>
-        <div className="px-4 py-2.5 bg-[#172035] border-b border-[#1E2D47]">
-          <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-            {isRefund ? t('summary.refundable') : t('summary.netPayable')}
-          </h3>
-        </div>
-        <div className="px-6 py-5 flex items-center justify-between">
-          <p className={`text-4xl font-bold result-value tabular-nums ${
-            isRefund ? 'text-[#BBFF47]' : payable === 0 ? 'text-slate-300' : 'text-orange-400'
-          }`}>
-            {formatBDT(Math.abs(payable))}
-          </p>
-          <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${
-            isRefund ? 'bg-[#BBFF47] text-[#0F1828]'
-            : payable === 0 ? 'bg-[#253A5E] text-slate-300'
-            : 'bg-orange-500 text-white'
-          }`}>
-            {isRefund ? 'REFUND' : payable === 0 ? 'NIL' : 'PAYABLE'}
-          </span>
-        </div>
-      </div>
     </div>
   );
 }

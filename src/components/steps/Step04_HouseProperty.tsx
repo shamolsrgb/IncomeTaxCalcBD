@@ -33,20 +33,7 @@ export function Step04_HouseProperty() {
         onChange={(v) => updateHouseProperty({ annualValue: v })}
       />
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-slate-300 mb-1">{t('houseProperty.vacancyMonths')}</label>
-        <select
-          value={hp.vacancyMonths}
-          onChange={(e) => updateHouseProperty({ vacancyMonths: Number(e.target.value) })}
-          className="w-32 px-3 py-2 bg-[#0F1828] border border-[#1E2D47] rounded-lg text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-[rgba(187,255,71,0.3)] focus:border-[rgba(187,255,71,0.5)]"
-        >
-          {Array.from({ length: 13 }, (_, i) => (
-            <option key={i} value={i}>{i} months</option>
-          ))}
-        </select>
-      </div>
-
-      <CurrencyInput label={t('houseProperty.municipalTax')} value={hp.municipalTax} onChange={(v) => updateHouseProperty({ municipalTax: v })} />
+<CurrencyInput label={t('houseProperty.municipalTax')} value={hp.municipalTax} onChange={(v) => updateHouseProperty({ municipalTax: v })} />
       <CurrencyInput
         label={t('houseProperty.mortgageInterest')}
         value={hp.mortgageInterest}

@@ -11,7 +11,6 @@ export interface SalaryResult {
 
 export function computeGovtSalary(s: SalaryInputGovt, cfg: AYConfig): SalaryResult {
   // Gross total: all components including exempt ones
-  const festivalBonusReceived = s.basic * Math.min(s.festivalBonusCount, 2);
   const grossTotal =
     s.basic +
     s.da +
@@ -21,7 +20,7 @@ export function computeGovtSalary(s: SalaryInputGovt, cfg: AYConfig): SalaryResu
     s.travelAllowance +
     s.entertainmentAllowance +
     s.uniformAllowance +
-    festivalBonusReceived +
+    s.festivalBonusCount +
     s.gpfContributionEmployer +
     s.pensionUncommuted +
     s.honorarium +
@@ -38,8 +37,8 @@ export function computeGovtSalary(s: SalaryInputGovt, cfg: AYConfig): SalaryResu
   // Travel allowance (TA/DA) and uniform: fully exempt for govt
   const taExemption = s.travelAllowance;
   const uniformExemption = s.uniformAllowance;
-  // Festival bonus: 1 month basic per festival (up to 2)
-  const festivalBonusExemption = s.basic * Math.min(s.festivalBonusCount, 2);
+  // Festival bonus: exempt up to 2 months' basic salary
+  const festivalBonusExemption = Math.min(s.festivalBonusCount, s.basic * 2);
   // Employer GPF contribution: exempt
   const gpfExemption = s.gpfContributionEmployer;
 
@@ -75,13 +74,12 @@ export function computePrivateSalary(
   s: SalaryInputPrivate,
   cfg: AYConfig
 ): SalaryResult {
-  const festivalBonusReceived = s.basic * Math.min(s.festivalBonusCount, 2);
   const grossTotal =
     s.basic +
     s.hraReceived +
     s.medical +
     s.conveyance +
-    festivalBonusReceived +
+    s.festivalBonusCount +
     s.employerPF +
     s.wppf +
     s.profitShare +
@@ -97,7 +95,7 @@ export function computePrivateSalary(
   );
   const medicalExemption = Math.min(s.medical, cfg.medicalAllowanceCap);
   const conveyanceExemption = Math.min(s.conveyance, cfg.conveyanceAllowanceCap);
-  const festivalBonusExemption = s.basic * Math.min(s.festivalBonusCount, 2);
+  const festivalBonusExemption = Math.min(s.festivalBonusCount, s.basic * 2);
   const employerPFExemption = Math.min(
     s.employerPF,
     cfg.employerPFExemptCap,
