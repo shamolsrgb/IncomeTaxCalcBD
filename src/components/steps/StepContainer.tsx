@@ -5,7 +5,6 @@ import { formatBDT } from '../../utils/currency';
 import { countUp, staggerIn, slideIn, bouncePress } from '../../utils/gsapHelpers';
 import { Step01_TaxpayerProfile } from './Step01_TaxpayerProfile';
 import { Step02_SalaryIncome } from './Step02_SalaryIncome';
-import { Step03_Securities } from './Step03_Securities';
 import { Step04_HouseProperty } from './Step04_HouseProperty';
 import { Step05_Agriculture } from './Step05_Agriculture';
 import { Step06_Business } from './Step06_Business';
@@ -18,7 +17,6 @@ import { Step12_Summary } from './Step12_Summary';
 const STEPS = [
   Step01_TaxpayerProfile,
   Step02_SalaryIncome,
-  Step03_Securities,
   Step04_HouseProperty,
   Step05_Agriculture,
   Step06_Business,
@@ -31,10 +29,10 @@ const STEPS = [
 
 const TAB_STEPS: number[][] = [
   [0],
-  [1, 2, 3, 4, 5, 6, 7],
+  [1, 2, 3, 4, 5, 6],
+  [7],
   [8],
   [9],
-  [10],
 ];
 
 export function StepContainer() {

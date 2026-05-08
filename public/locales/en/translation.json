@@ -24,15 +24,14 @@
   "steps": {
     "0": "Taxpayer Profile",
     "1": "Salary Income",
-    "2": "Interest & Securities",
-    "3": "House Property",
-    "4": "Agricultural Income",
-    "5": "Business / Profession",
-    "6": "Capital Gains",
-    "7": "Other Income",
-    "8": "Investments & Rebate",
-    "9": "TDS & Advance Tax",
-    "10": "Tax Summary"
+    "2": "House Property",
+    "3": "Agricultural Income",
+    "4": "Business / Profession",
+    "5": "Capital Gains",
+    "6": "Other Income",
+    "7": "Investments & Rebate",
+    "8": "TDS & Advance Tax",
+    "9": "Tax Summary"
   },
   "profile": {
     "title": "Taxpayer Profile",
