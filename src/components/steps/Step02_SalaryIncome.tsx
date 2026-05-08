@@ -8,24 +8,6 @@ import { TAX_CONFIG } from '../../config/taxConfig';
 import { computeGovtSalary, computePrivateSalary } from '../../engine/salaryEngine';
 import type { AYConfig } from '../../types/config';
 
-function SecuritiesSection({ cfg }: { cfg: AYConfig }) {
-  const { t } = useTranslation();
-  const { inputs, updateSecurities } = useTaxStore();
-  const s = inputs.securities;
-  const listedDivTaxable = Math.max(0, s.listedDividend - cfg.listedDividendExemption);
-  const mfDivTaxable = Math.max(0, s.mutualFundDividend - cfg.mutualFundDividendExemption);
-  return (
-    <div className="grid grid-cols-2 gap-x-4">
-      <CurrencyInput label={t('securities.bankFdr')} value={s.bankFdrInterest} onChange={(v) => updateSecurities({ bankFdrInterest: v })} note="TDS @10% auto-credited" />
-      <CurrencyInput label={t('securities.sanchayapatra')} value={s.sanchayapatraInterest} onChange={(v) => updateSecurities({ sanchayapatraInterest: v })} note="TDS @10% auto-credited" />
-      <CurrencyInput label={t('securities.listedDividend')} value={s.listedDividend} onChange={(v) => updateSecurities({ listedDividend: v })} badge={s.listedDividend > 0 ? `${t('securities.listedDividendExemptNote')} — Taxable: ${formatBDT(listedDivTaxable)}` : undefined} />
-      <CurrencyInput label={t('securities.nonListedDividend')} value={s.nonListedDividend} onChange={(v) => updateSecurities({ nonListedDividend: v })} note="Fully taxable at regular slab rates" />
-      <CurrencyInput label={t('securities.mutualFundDividend')} value={s.mutualFundDividend} onChange={(v) => updateSecurities({ mutualFundDividend: v })} badge={s.mutualFundDividend > 0 ? `${t('securities.mutualFundExemptNote')} — Taxable: ${formatBDT(mfDivTaxable)}` : undefined} />
-      <CurrencyInput label={t('securities.govtSecurities')} value={s.govtSecuritiesInterest} onChange={(v) => updateSecurities({ govtSecuritiesInterest: v })} />
-    </div>
-  );
-}
-
 export function Step02_SalaryIncome() {
   const { inputs } = useTaxStore();
   const isGovt = inputs.employerType === 'govt' || inputs.employerType === 'retired';
@@ -37,14 +19,13 @@ export function Step02_SalaryIncome() {
 
 // ── Private Salary ────────────────────────────────────────────────────────────
 
-type PrivateSection = 'securities' | 'pf' | 'wppf' | 'gratuity' | 'leaveEncashment';
+type PrivateSection = 'pf' | 'wppf' | 'gratuity' | 'leaveEncashment';
 
 const PRIVATE_OPTIONS: { key: PrivateSection; label: string; description?: string }[] = [
-  { key: 'securities', label: 'Interest & Securities' },
-  { key: 'pf', label: 'Provident Fund (PF)' },
   { key: 'wppf', label: 'WPPF / Profit Share / Overtime Pay', description: "Workers' Profit Participation Fund and other variable pay" },
-  { key: 'gratuity', label: 'Gratuity' },
   { key: 'leaveEncashment', label: 'Leave Encashment' },
+  { key: 'gratuity', label: 'Gratuity' },
+  { key: 'pf', label: 'Provident Fund (PF)' },
 ];
 
 function PrivateSalary({ cfg }: { cfg: AYConfig }) {
@@ -115,23 +96,6 @@ function PrivateSalary({ cfg }: { cfg: AYConfig }) {
       </div>
 
       {/* Optional sections */}
-      {active.has('securities') && (
-        <OptionalSection title="Interest & Securities" onRemove={() => remove('securities')}>
-          <SecuritiesSection cfg={cfg} />
-        </OptionalSection>
-      )}
-
-      {active.has('pf') && (
-        <OptionalSection title="Provident Fund (PF)" onRemove={() => remove('pf')}>
-          <CurrencyInput
-            label={t('salary.ownPF')}
-            value={s.ownPFContribution}
-            onChange={(v) => updateSalaryPrivate({ ownPFContribution: v })}
-            note="Eligible for 15% investment rebate"
-          />
-        </OptionalSection>
-      )}
-
       {active.has('wppf') && (
         <OptionalSection title="WPPF / Profit Share / Overtime Pay" onRemove={() => remove('wppf')}>
           <CurrencyInput
@@ -145,15 +109,26 @@ function PrivateSalary({ cfg }: { cfg: AYConfig }) {
         </OptionalSection>
       )}
 
+      {active.has('leaveEncashment') && (
+        <OptionalSection title="Leave Encashment" onRemove={() => remove('leaveEncashment')}>
+          <CurrencyInput label={t('salary.leaveEncashment')} value={s.leaveEncashment} onChange={(v) => updateSalaryPrivate({ leaveEncashment: v })} note="Exempt at retirement" />
+        </OptionalSection>
+      )}
+
       {active.has('gratuity') && (
         <OptionalSection title="Gratuity" onRemove={() => remove('gratuity')}>
           <CurrencyInput label={t('salary.gratuity')} value={s.gratuity} onChange={(v) => updateSalaryPrivate({ gratuity: v })} note="Exempt up to ৳4.5 crore from approved fund" />
         </OptionalSection>
       )}
 
-      {active.has('leaveEncashment') && (
-        <OptionalSection title="Leave Encashment" onRemove={() => remove('leaveEncashment')}>
-          <CurrencyInput label={t('salary.leaveEncashment')} value={s.leaveEncashment} onChange={(v) => updateSalaryPrivate({ leaveEncashment: v })} note="Exempt at retirement" />
+      {active.has('pf') && (
+        <OptionalSection title="Provident Fund (PF)" onRemove={() => remove('pf')}>
+          <CurrencyInput
+            label={t('salary.ownPF')}
+            value={s.ownPFContribution}
+            onChange={(v) => updateSalaryPrivate({ ownPFContribution: v })}
+            note="Eligible for 15% investment rebate"
+          />
         </OptionalSection>
       )}
 
@@ -178,10 +153,9 @@ function PrivateSalary({ cfg }: { cfg: AYConfig }) {
 
 // ── Govt Salary ───────────────────────────────────────────────────────────────
 
-type GovtSection = 'securities' | 'pension' | 'gratuity' | 'leaveEncashment';
+type GovtSection = 'pension' | 'gratuity' | 'leaveEncashment';
 
 const GOVT_OPTIONS: { key: GovtSection; label: string }[] = [
-  { key: 'securities', label: 'Interest & Securities' },
   { key: 'pension', label: 'Pension Income' },
   { key: 'gratuity', label: 'Gratuity' },
   { key: 'leaveEncashment', label: 'Leave Encashment' },
@@ -273,12 +247,6 @@ function GovtSalary({ cfg }: { cfg: AYConfig }) {
       </div>
 
       {/* Optional sections */}
-      {active.has('securities') && (
-        <OptionalSection title="Interest & Securities" onRemove={() => remove('securities')}>
-          <SecuritiesSection cfg={cfg} />
-        </OptionalSection>
-      )}
-
       {active.has('pension') && (
         <OptionalSection title="Pension Income" onRemove={() => remove('pension')}>
           <CurrencyInput label={t('salary.pensionCommuted')} value={s.pensionCommuted} onChange={(v) => updateSalaryGovt({ pensionCommuted: v })} note="Lump-sum from approved govt fund — fully exempt" />
@@ -347,12 +315,6 @@ function OptionalSection({ title, onRemove, children }: {
 }
 
 const INCOME_ICONS: Record<string, React.ReactNode> = {
-  securities: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13l4-4 4 4 4-6 4 3" />
-      <rect x="2" y="3" width="20" height="18" rx="2" />
-    </svg>
-  ),
   pf: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
       <ellipse cx="12" cy="10" rx="7" ry="5" />
@@ -464,7 +426,7 @@ function AddIncomeModal<T extends string>({
                         <circle cx="12" cy="12" r="8" />
                       </svg>
                     )}
-                    <span className="text-[9px] font-semibold text-center leading-tight">{opt.label}</span>
+                    <span className="text-[11px] font-semibold text-center leading-tight">{opt.label}</span>
                   </button>
                 );
               })}

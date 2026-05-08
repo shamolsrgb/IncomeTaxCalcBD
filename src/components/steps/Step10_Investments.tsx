@@ -24,22 +24,24 @@ export function Step10_Investments() {
         </div>
       )}
 
-      <CurrencyInput label={t('investments.lifeInsurance')} value={inv.lifeInsurance} onChange={(v) => updateInvestments({ lifeInsurance: v })} note="Premium for own, spouse, or children's life insurance policies" />
-      <CurrencyInput label={t('investments.pfGpf')} value={inv.ownPFOrGPF} onChange={(v) => updateInvestments({ ownPFOrGPF: v })} note="Own contribution to recognised PF or GPF (own PF from salary auto-included)" />
-      <CurrencyInput label={t('investments.sanchayapatra')} value={inv.sanchayapatra} onChange={(v) => updateInvestments({ sanchayapatra: v })} note="Purchase price of new Sanchayapatra / National Savings Certificates" />
-      <CurrencyInput
-        label={t('investments.dps')}
-        value={inv.dps}
-        onChange={(v) => updateInvestments({ dps: v })}
-        badge={inv.dps > cfg.dpsCap ? `Capped at ${formatBDT(cfg.dpsCap)}/account for rebate` : undefined}
-      />
-      <CurrencyInput label={t('investments.listedShares')} value={inv.listedShares} onChange={(v) => updateInvestments({ listedShares: v })} note="Cost of purchase of listed company shares during the year" />
-      <CurrencyInput label={t('investments.mutualFund')} value={inv.mutualFund} onChange={(v) => updateInvestments({ mutualFund: v })} />
-      <CurrencyInput label={t('investments.treasuryBond')} value={inv.treasuryBond} onChange={(v) => updateInvestments({ treasuryBond: v })} />
-      <CurrencyInput label={t('investments.wageEarnerBond')} value={inv.wageEarnerBond} onChange={(v) => updateInvestments({ wageEarnerBond: v })} />
-      <CurrencyInput label={t('investments.ups')} value={inv.ups} onChange={(v) => updateInvestments({ ups: v })} note="Universal Pension Scheme contribution (new AY 2025-26)" />
-      <CurrencyInput label={t('investments.zakat')} value={inv.zakat} onChange={(v) => updateInvestments({ zakat: v })} />
-      <CurrencyInput label={t('investments.charity')} value={inv.charity} onChange={(v) => updateInvestments({ charity: v })} />
+      <div className="grid grid-cols-2 gap-x-4">
+        <CurrencyInput label={t('investments.lifeInsurance')} value={inv.lifeInsurance} onChange={(v) => updateInvestments({ lifeInsurance: v })} note="Premium for own, spouse, or children's life insurance policies" />
+        <CurrencyInput label={t('investments.pfGpf')} value={inv.ownPFOrGPF} onChange={(v) => updateInvestments({ ownPFOrGPF: v })} note="Own contribution to recognised PF or GPF (own PF from salary auto-included)" />
+        <CurrencyInput label={t('investments.sanchayapatra')} value={inv.sanchayapatra} onChange={(v) => updateInvestments({ sanchayapatra: v })} note="Purchase price of new Sanchayapatra / National Savings Certificates" />
+        <CurrencyInput
+          label={t('investments.dps')}
+          value={inv.dps}
+          onChange={(v) => updateInvestments({ dps: v })}
+          badge={inv.dps > cfg.dpsCap ? `Capped at ${formatBDT(cfg.dpsCap)}/account for rebate` : undefined}
+        />
+        <CurrencyInput label={t('investments.listedShares')} value={inv.listedShares} onChange={(v) => updateInvestments({ listedShares: v })} note="Cost of purchase of listed company shares during the year" />
+        <CurrencyInput label={t('investments.mutualFund')} value={inv.mutualFund} onChange={(v) => updateInvestments({ mutualFund: v })} />
+        <CurrencyInput label={t('investments.treasuryBond')} value={inv.treasuryBond} onChange={(v) => updateInvestments({ treasuryBond: v })} />
+        <CurrencyInput label={t('investments.wageEarnerBond')} value={inv.wageEarnerBond} onChange={(v) => updateInvestments({ wageEarnerBond: v })} />
+        <CurrencyInput label={t('investments.ups')} value={inv.ups} onChange={(v) => updateInvestments({ ups: v })} note="Universal Pension Scheme contribution (new AY 2025-26)" />
+        <CurrencyInput label={t('investments.zakat')} value={inv.zakat} onChange={(v) => updateInvestments({ zakat: v })} />
+        <CurrencyInput label={t('investments.charity')} value={inv.charity} onChange={(v) => updateInvestments({ charity: v })} />
+      </div>
 
     </div>
   );

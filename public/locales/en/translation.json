@@ -24,14 +24,10 @@
   "steps": {
     "0": "Taxpayer Profile",
     "1": "Salary Income",
-    "2": "House Property",
-    "3": "Agricultural Income",
-    "4": "Business / Profession",
-    "5": "Capital Gains",
-    "6": "Other Income",
-    "7": "Investments & Rebate",
-    "8": "TDS & Advance Tax",
-    "9": "Tax Summary"
+    "2": "Others Income",
+    "3": "Investments & Rebate",
+    "4": "TDS & Advance Tax",
+    "5": "Tax Summary"
   },
   "profile": {
     "title": "Taxpayer Profile",
@@ -126,7 +122,7 @@
   },
   "business": {
     "title": "Business / Professional Income",
-    "netProfit": "Net Profit from Business / Profession",
+    "netProfit": "Net Profit from Business",
     "businessLoanInterest": "Business Loan Interest (or link from Loans step)"
   },
   "capitalGains": {
