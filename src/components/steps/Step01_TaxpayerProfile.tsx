@@ -22,8 +22,20 @@ function CategoryIcon({ cat }: { cat: TaxpayerCategory }) {
     </svg>
   );
   if (cat === 'disabled') return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
-      <circle cx="12" cy="4" r="2" /><path strokeLinecap="round" strokeLinejoin="round" d="M10 8h4l1 5H9l-1 3a5 5 0 1 0 9.2 2" />
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7">
+      {/* Head */}
+      <circle cx="12.5" cy="3" r="2.2" />
+      {/* Torso / backrest */}
+      <rect x="11" y="5.5" width="3" height="6" rx="1.5" />
+      {/* Seat extending right */}
+      <rect x="11" y="10.5" width="8" height="2.5" rx="1.25" />
+      {/* Diagonal leg to footrest */}
+      <path d="M19 13l2.8 5.8a1.25 1.25 0 01-2.3 1l-2.8-5.8z" />
+      {/* Wheel ring (evenodd = donut shape) */}
+      <path fillRule="evenodd" d="
+        M14.5 19a6 6 0 1 1-12 0 6 6 0 0 1 12 0z
+        M12 19a3.5 3.5 0 1 0-7 0 3.5 3.5 0 0 0 7 0z
+      " />
     </svg>
   );
   if (cat === 'freedomFighter') return (

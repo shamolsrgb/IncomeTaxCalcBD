@@ -45,7 +45,7 @@
       "female": "Female",
       "senior": "Senior Citizen (65+)",
       "disabled": "Person with Disability",
-      "freedomFighter": "Gazetted War-Wounded Freedom Fighter",
+      "freedomFighter": "Freedom Fighter",
       "thirdGender": "Third Gender (Transgender)"
     },
     "employerTypes": {
@@ -65,11 +65,11 @@
     "title": "Salary Income",
     "basic": "Basic Salary (annual)",
     "da": "Dearness Allowance (DA)",
-    "hraReceived": "House Rent Allowance (HRA) received",
+    "hraReceived": "House Rent Allowance (HRA)",
     "hraExemption": "HRA Exemption (auto)",
     "residingInGovtQuarter": "Residing in government-provided quarter?",
-    "medical": "Medical Allowance received",
-    "conveyance": "Conveyance Allowance received",
+    "medical": "Medical Allowance",
+    "conveyance": "Conveyance Allowance",
     "travelAllowance": "Travelling Allowance / Daily Allowance (TA/DA)",
     "entertainmentAllowance": "Entertainment Allowance",
     "uniformAllowance": "Uniform / Dress Allowance",

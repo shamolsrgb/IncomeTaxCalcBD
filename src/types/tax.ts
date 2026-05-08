@@ -47,6 +47,7 @@ export interface SalaryInputGovt {
   gratuity: number;
   leaveEncashment: number;
   honorarium: number;
+  banglaNewYearAllowance: number;
   otherAllowances: number;
 }
 
@@ -146,6 +147,7 @@ export interface TDSCreditsInput {
   professional: number;
   dividend: number;
   other: number;
+  vehicleAIT: number;
 }
 
 // ─── Primary Engine Input ──────────────────────────────────────────────────────

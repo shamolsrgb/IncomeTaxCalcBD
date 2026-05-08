@@ -153,12 +153,13 @@ function PrivateSalary({ cfg }: { cfg: AYConfig }) {
 
 // ── Govt Salary ───────────────────────────────────────────────────────────────
 
-type GovtSection = 'pension' | 'gratuity' | 'leaveEncashment';
+type GovtSection = 'pension' | 'gratuity' | 'leaveEncashment' | 'otherAllowances';
 
 const GOVT_OPTIONS: { key: GovtSection; label: string }[] = [
-  { key: 'pension', label: 'Pension Income' },
-  { key: 'gratuity', label: 'Gratuity' },
+  { key: 'otherAllowances', label: 'Other Allowances' },
   { key: 'leaveEncashment', label: 'Leave Encashment' },
+  { key: 'gratuity', label: 'Gratuity' },
+  { key: 'pension', label: 'Pension Income' },
 ];
 
 function GovtSalary({ cfg }: { cfg: AYConfig }) {
@@ -219,38 +220,36 @@ function GovtSalary({ cfg }: { cfg: AYConfig }) {
           onChange={(v) => updateSalaryGovt({ conveyance: v })}
           badge={s.conveyance > 0 ? `Exempt: ${formatBDT(Math.min(s.conveyance, cfg.conveyanceAllowanceCap))}` : undefined}
         />
-        <CurrencyInput
-          label={t('salary.festivalBonusCount')}
-          value={s.festivalBonusCount}
-          onChange={(v) => updateSalaryGovt({ festivalBonusCount: v })}
-          badge={s.festivalBonusCount > 0 && s.basic > 0 ? `Exempt: ${formatBDT(Math.min(s.festivalBonusCount, s.basic * 2))}` : undefined}
-          action={s.basic > 0 ? { label: 'Auto calculate', onClick: () => updateSalaryGovt({ festivalBonusCount: Math.round((s.basic / 12) * 2) }) } : undefined}
-        />
-        <CurrencyInput
-          label={t('salary.gpfOwn')}
-          value={s.ownGpfContribution}
-          onChange={(v) => updateSalaryGovt({ ownGpfContribution: v })}
-          note="Eligible for 15% investment rebate"
-        />
-
-        {/* ── Group 2: Other Allowances ── */}
-        <div className="col-span-2 mt-2 mb-6 flex items-center gap-3">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">Other Allowances</span>
-          <div className="flex-1 border-t border-[#1E2D47]" />
+        <div className="col-span-2">
+          <CurrencyInput
+            label={t('salary.festivalBonusCount')}
+            value={s.festivalBonusCount}
+            onChange={(v) => updateSalaryGovt({ festivalBonusCount: v })}
+            badge={s.festivalBonusCount > 0 && s.basic > 0 ? `Exempt: ${formatBDT(Math.min(s.festivalBonusCount, s.basic * 2))}` : undefined}
+            action={s.basic > 0 ? { label: 'Auto calculate', onClick: () => updateSalaryGovt({ festivalBonusCount: Math.round((s.basic / 12) * 2) }) } : undefined}
+          />
         </div>
-        <CurrencyInput label={t('salary.da')} value={s.da} onChange={(v) => updateSalaryGovt({ da: v })} />
-        <CurrencyInput label={t('salary.travelAllowance')} value={s.travelAllowance} onChange={(v) => updateSalaryGovt({ travelAllowance: v })} note="Fully exempt (official travel reimbursement)" />
-        <CurrencyInput label={t('salary.entertainmentAllowance')} value={s.entertainmentAllowance} onChange={(v) => updateSalaryGovt({ entertainmentAllowance: v })} />
-        <CurrencyInput label={t('salary.uniformAllowance')} value={s.uniformAllowance} onChange={(v) => updateSalaryGovt({ uniformAllowance: v })} note="Fully exempt for official uniform" />
-        <CurrencyInput label={t('salary.honorarium')} value={s.honorarium} onChange={(v) => updateSalaryGovt({ honorarium: v })} note="Fully taxable" />
-        <CurrencyInput label={t('salary.otherAllowances')} value={s.otherAllowances} onChange={(v) => updateSalaryGovt({ otherAllowances: v })} />
+
       </div>
 
-      {/* Optional sections */}
-      {active.has('pension') && (
-        <OptionalSection title="Pension Income" onRemove={() => remove('pension')}>
-          <CurrencyInput label={t('salary.pensionCommuted')} value={s.pensionCommuted} onChange={(v) => updateSalaryGovt({ pensionCommuted: v })} note="Lump-sum from approved govt fund — fully exempt" />
-          <CurrencyInput label={t('salary.pensionUncommuted')} value={s.pensionUncommuted} onChange={(v) => updateSalaryGovt({ pensionUncommuted: v })} note="Monthly pension — taxable as salary income" />
+      {/* Optional sections — order matches GOVT_OPTIONS */}
+      {active.has('otherAllowances') && (
+        <OptionalSection title="Other Allowances" onRemove={() => remove('otherAllowances')}>
+          <div className="grid grid-cols-2 gap-x-4">
+            <CurrencyInput label={t('salary.da')} value={s.da} onChange={(v) => updateSalaryGovt({ da: v })} />
+            <CurrencyInput label={t('salary.travelAllowance')} value={s.travelAllowance} onChange={(v) => updateSalaryGovt({ travelAllowance: v })} note="Fully exempt (official travel reimbursement)" />
+            <CurrencyInput label={t('salary.entertainmentAllowance')} value={s.entertainmentAllowance} onChange={(v) => updateSalaryGovt({ entertainmentAllowance: v })} />
+            <CurrencyInput label={t('salary.uniformAllowance')} value={s.uniformAllowance} onChange={(v) => updateSalaryGovt({ uniformAllowance: v })} note="Fully exempt for official uniform" />
+            <CurrencyInput label={t('salary.honorarium')} value={s.honorarium} onChange={(v) => updateSalaryGovt({ honorarium: v })} note="Fully taxable" />
+            <CurrencyInput label="Bangla New Year Allowance" value={s.banglaNewYearAllowance ?? 0} onChange={(v) => updateSalaryGovt({ banglaNewYearAllowance: v })} note="Fully taxable" />
+            <CurrencyInput label={t('salary.otherAllowances')} value={s.otherAllowances} onChange={(v) => updateSalaryGovt({ otherAllowances: v })} />
+          </div>
+        </OptionalSection>
+      )}
+
+      {active.has('leaveEncashment') && (
+        <OptionalSection title="Leave Encashment" onRemove={() => remove('leaveEncashment')}>
+          <CurrencyInput label={t('salary.leaveEncashment')} value={s.leaveEncashment} onChange={(v) => updateSalaryGovt({ leaveEncashment: v })} note="Fully exempt at retirement" />
         </OptionalSection>
       )}
 
@@ -260,9 +259,10 @@ function GovtSalary({ cfg }: { cfg: AYConfig }) {
         </OptionalSection>
       )}
 
-      {active.has('leaveEncashment') && (
-        <OptionalSection title="Leave Encashment" onRemove={() => remove('leaveEncashment')}>
-          <CurrencyInput label={t('salary.leaveEncashment')} value={s.leaveEncashment} onChange={(v) => updateSalaryGovt({ leaveEncashment: v })} note="Fully exempt at retirement" />
+      {active.has('pension') && (
+        <OptionalSection title="Pension Income" onRemove={() => remove('pension')}>
+          <CurrencyInput label={t('salary.pensionCommuted')} value={s.pensionCommuted} onChange={(v) => updateSalaryGovt({ pensionCommuted: v })} note="Lump-sum from approved govt fund — fully exempt" />
+          <CurrencyInput label={t('salary.pensionUncommuted')} value={s.pensionUncommuted} onChange={(v) => updateSalaryGovt({ pensionUncommuted: v })} note="Monthly pension — taxable as salary income" />
         </OptionalSection>
       )}
 
@@ -348,6 +348,11 @@ const INCOME_ICONS: Record<string, React.ReactNode> = {
       <circle cx="12" cy="7" r="3" />
       <path strokeLinecap="round" d="M9 13s-2 1-2 4l1 4h8l1-4c0-3-2-4-2-4" />
       <path strokeLinecap="round" d="M14 16l2 2 2-1" />
+    </svg>
+  ),
+  otherAllowances: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h10M4 18h7" />
     </svg>
   ),
 };

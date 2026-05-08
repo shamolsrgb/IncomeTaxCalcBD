@@ -243,7 +243,8 @@ export function calculateTax(
     tds.houseRent +
     tds.professional +
     tds.dividend +
-    tds.other;
+    tds.other +
+    (tds.vehicleAIT ?? 0);
 
   const netTaxPayable = totalTaxPlusSurcharge - tdsTotal - inputs.advanceTax;
 
@@ -303,7 +304,7 @@ export function defaultInputs(): TaxEngineInput {
       medical: 0, conveyance: 0, travelAllowance: 0, entertainmentAllowance: 0,
       uniformAllowance: 0, festivalBonusCount: 0, gpfContributionEmployer: 0,
       ownGpfContribution: 0, pensionCommuted: 0, pensionUncommuted: 0,
-      gratuity: 0, leaveEncashment: 0, honorarium: 0, otherAllowances: 0,
+      gratuity: 0, leaveEncashment: 0, honorarium: 0, banglaNewYearAllowance: 0, otherAllowances: 0,
     },
     salaryPrivate: {
       basic: 0, hraReceived: 0, medical: 0, conveyance: 0,
@@ -335,7 +336,7 @@ export function defaultInputs(): TaxEngineInput {
     },
     tdsCredits: {
       salary: 0, bankInterest: 0, sanchayapatraInterest: 0,
-      houseRent: 0, professional: 0, dividend: 0, other: 0,
+      houseRent: 0, professional: 0, dividend: 0, other: 0, vehicleAIT: 0,
     },
     advanceTax: 0,
   };

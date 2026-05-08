@@ -24,6 +24,7 @@ export function computeGovtSalary(s: SalaryInputGovt, cfg: AYConfig): SalaryResu
     s.gpfContributionEmployer +
     s.pensionUncommuted +
     s.honorarium +
+    (s.banglaNewYearAllowance ?? 0) +
     s.otherAllowances;
   // Pensioncommuted and gratuity/leaveEncashment are fully exempt — not included in gross
 

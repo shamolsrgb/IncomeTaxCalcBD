@@ -20,7 +20,6 @@ export function Step12_Summary() {
       <div className="flex items-center justify-between mb-5 no-print">
         <div>
           <h2 className="text-lg font-bold text-slate-100">{t('summary.title')}</h2>
-          <p className="text-xs text-slate-400 mt-0.5">{cfg.label}</p>
         </div>
         <button
           onClick={handlePrint}

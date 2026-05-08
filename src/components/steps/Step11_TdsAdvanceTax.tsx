@@ -1,15 +1,37 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTaxStore } from '../../store/useTaxStore';
 import { CurrencyInput } from '../ui/CurrencyInput';
+
+const VEHICLE_AIT_OPTIONS = [
+  { label: 'Up to 1500cc', value: 25000 },
+  { label: '1501cc – 2000cc', value: 50000 },
+  { label: '2001cc – 2500cc', value: 75000 },
+  { label: '2501cc – 3000cc', value: 125000 },
+  { label: '3001cc – 3500cc', value: 150000 },
+  { label: 'Above 3500cc', value: 200000 },
+  { label: 'Microbus', value: 30000 },
+];
 
 export function Step11_TdsAdvanceTax() {
   const { t } = useTranslation();
   const { inputs, updateTdsCredits, updateInputs } = useTaxStore();
   const tds = inputs.tdsCredits;
+  const [hasVehicle, setHasVehicle] = useState((tds.vehicleAIT ?? 0) > 0);
 
-  // Auto-computed TDS amounts for display
   const autoBankTDS = Math.round(inputs.securities.bankFdrInterest * 0.10);
   const autoSanchTDS = Math.round(inputs.securities.sanchayapatraInterest * 0.10);
+
+  function handleVehicleToggle(on: boolean) {
+    setHasVehicle(on);
+    if (!on) updateTdsCredits({ vehicleAIT: 0 });
+  }
+
+  function handleEngineSelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    updateTdsCredits({ vehicleAIT: Number(e.target.value) });
+  }
+
+  const selectedOption = VEHICLE_AIT_OPTIONS.find(o => o.value === (tds.vehicleAIT ?? 0));
 
   return (
     <div>
@@ -42,7 +64,58 @@ export function Step11_TdsAdvanceTax() {
         <CurrencyInput label={t('tds.other')} value={tds.other} onChange={(v) => updateTdsCredits({ other: v })} />
       </div>
 
-      <div className="border-t border-[#1E2D47] pt-4 mt-2">
+      {/* Vehicle AIT */}
+      <div className="mt-4 border border-[#1E2D47] rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-3 bg-[#0F1828]">
+          <div>
+            <p className="text-sm font-semibold text-slate-200">Annual AIT — Vehicle</p>
+            <p className="text-xs text-slate-500 mt-0.5">Advance income tax paid on vehicle registration / fitness renewal</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => handleVehicleToggle(!hasVehicle)}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 focus:outline-none ${
+              hasVehicle ? 'bg-[#BBFF47]' : 'bg-[#1E2D47]'
+            }`}
+            aria-pressed={hasVehicle}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                hasVehicle ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+
+        {hasVehicle && (
+          <div className="px-4 py-4 section-slide-in grid grid-cols-2 gap-x-4 gap-y-3 border-t border-[#1E2D47]">
+            <div className="mb-1">
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">Engine Capacity</label>
+              <select
+                value={tds.vehicleAIT ?? 0}
+                onChange={handleEngineSelect}
+                className="input-field"
+              >
+                <option value={0}>— Select engine capacity —</option>
+                {VEHICLE_AIT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label} — ৳{o.value.toLocaleString('en-IN')}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-1">
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">AIT Amount</label>
+              <div className="flex items-center h-10 px-3 rounded-lg border border-[#1E2D47] bg-[#0F1828] text-sm text-slate-300">
+                {selectedOption ? `৳${selectedOption.value.toLocaleString('en-IN')}` : '—'}
+              </div>
+              <p className="text-xs text-slate-500 mt-1">Auto-filled from engine capacity selection</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="border-t border-[#1E2D47] pt-4 mt-4">
         <CurrencyInput
           label={t('tds.advanceTax')}
           value={inputs.advanceTax}
