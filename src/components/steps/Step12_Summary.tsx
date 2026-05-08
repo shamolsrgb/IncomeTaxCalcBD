@@ -9,9 +9,6 @@ export function Step12_Summary() {
   const { inputs, result } = useTaxStore();
   const cfg = TAX_CONFIG[inputs.ayKey];
   const printRef = useRef<HTMLDivElement>(null);
-  const isRefund = result.isRefundable;
-  const payable = result.netTaxPayable;
-  const isLate = result.isLateFilingApplicable;
 
   function handlePrint() {
     window.print();
